@@ -1,8 +1,8 @@
-# ValueInvesting
+# Value Investing and AI analysis
 
 ## **Script to generate a list of stock tickers and analyse them as a value investor.**
 
-This Python script aims to automate the stock selection process for value investing. It fetches financial data for various stock tickers, processes this data, and produces a CSV file containing the stocks that pass certain criteria. 
+This Python script aims to automate the stock selection process for value investing. It fetches financial data for various stock tickers, processes this data using Open AIs API, and produces a CSV file containing the stocks that pass certain criteria. 
 
 **Prerequisites**
 
