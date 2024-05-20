@@ -1,22 +1,32 @@
-# Value Investing and AI analysis
+# Value Investing and AI Analysis
 
-## **Script to generate a list of stock tickers and analyse them as a value investor.**
+## Overview
+This project automates the stock selection process for value investing by fetching financial data, analyzing sentiment and earnings calls using OpenAI, and applying value investing criteria to identify potential investment opportunities.
 
-This Python script aims to automate the stock selection process for value investing. It fetches financial data for various stock tickers, processes this data using Open AIs API, and produces a CSV file containing the stocks that pass certain criteria. 
+## Features
+- Fetch financial data for stock tickers
+- Perform sentiment analysis on stock-related news
+- Analyze earnings calls
+- Apply value investing thresholds
+- Output results to a CSV file
 
-**Prerequisites**
+## Prerequisites
+- Required Python packages:
+  - pandas
+  - requests
+  - openai
+  - concurrent.futures
+  - stocksymbol
 
-This script requires the following Python packages:
-```
-pandas
-requests
-openai
-concurrent.futures
-stocksymbol
-```
+## Setup
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/tetleysteabags/valueinvesting-ai-analysis.git
+   cd valueinvesting-ai-analysis
+2. Set up accounts and required APIs
+3. Determine the country and stock exchanges you want to focus on
+4. Set value investor thresholds based on what you're interested in
 
-
-**Setup**
 
 The script requires several API keys:
 ```
