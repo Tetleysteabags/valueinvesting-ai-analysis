@@ -12,11 +12,18 @@ This project automates the stock selection process for value investing by fetchi
 
 ## Prerequisites
 - Required Python packages:
-  - pandas
-  - requests
-  - openai
-  - concurrent.futures
-  - stocksymbol
+- concurrent.futures.ThreadPoolExecutor: For concurrent execution.
+- openai: For accessing OpenAI's API.
+- logging: For logging information.
+- pandas: For data manipulation.
+- requests: For making HTTP requests.
+- stocksymbol.StockSymbol: For retrieving stock symbols.
+
+## Required API keys
+- fmp_key: Financial Modeling Prep API key.
+- news_api_key: News API key.
+- openai_api_key: OpenAI API key.
+- api_key: Stock symbol API key for StockSymbol.
 
 ## Setup
 1. Clone the repository:
@@ -26,6 +33,7 @@ This project automates the stock selection process for value investing by fetchi
 2. Set up accounts and required APIs
 3. Determine the country and stock exchanges you want to focus on
 4. Set value investor thresholds based on what you're interested in
+5. Fetches key metrics, historical prices, income statements, shares float, and ratios data for stock tickers using the Financial Modeling Prep API.
 
 
 The script requires several API keys:
