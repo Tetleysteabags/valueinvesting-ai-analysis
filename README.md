@@ -41,6 +41,7 @@ pip install -r requirements.txt
 
 
 ## Project Structure
+<pre>
 ├── main.py # Main entry point
 ├── config.py # Configuration settings
 ├── utils/
@@ -52,7 +53,7 @@ pip install -r requirements.txt
 └── analysis/
 ├── financial_analysis.py # Financial calculations
 └── value_analysis.py # Value investing logic
-
+</pre>
 
 ## Value Investing Criteria
 
