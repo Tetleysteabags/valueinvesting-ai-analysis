@@ -12,6 +12,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from queue import Queue
 import threading
 from tqdm import tqdm
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Configuration
 REQUEST_DELAY        = 2.0
@@ -129,7 +133,7 @@ def validate_response_data(data: Any, endpoint: str) -> bool:
         if not isinstance(data, list) or len(data) == 0:
             logging.warning(f"Invalid key metrics TTM data structure: {data}")
             return False
-        required_fields = ["peRatio", "pbRatio", "roe"]
+        required_fields = ["peRatioTTM", "pbRatioTTM", "roeTTM"]
         if not any(field in data[0] for field in required_fields):
             logging.warning(f"Missing all key metrics fields: {data[0]}")
             return False
@@ -138,7 +142,7 @@ def validate_response_data(data: Any, endpoint: str) -> bool:
         if not isinstance(data, list) or len(data) == 0:
             logging.warning(f"Invalid ratios TTM data structure: {data}")
             return False
-        required_fields = ["priceEarningsRatio", "priceToBookRatio", "returnOnEquity"]
+        required_fields = ["returnOnEquityTTM", "returnOnAssetsTTM", "netProfitMarginTTM"]
         if not any(field in data[0] for field in required_fields):
             logging.warning(f"Missing all ratio fields: {data[0]}")
             return False
