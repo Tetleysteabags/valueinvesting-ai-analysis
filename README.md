@@ -7,6 +7,9 @@ This project automates the stock selection process for value investing by fetchi
 - Fetch financial data for stock tickers
 - Apply value investing thresholds
 - Analyze earnings calls and other data using OpenAI
+- **NEW: Historical data storage and management**
+- **NEW: Comprehensive backtesting framework**
+- **NEW: Strategy performance analysis and visualization**
 - Output results to a CSV file
 
 ## Prerequisites
@@ -49,10 +52,20 @@ pip install -r requirements.txt
 │ └── cache.py # Caching utilities
 ├── services/
 │ ├── openai_service.py # OpenAI API integration
-│ └── stock_service.py # Stock data fetching
-└── analysis/
-├── financial_analysis.py # Financial calculations
-└── value_analysis.py # Value investing logic
+│ ├── stock_service.py # Stock data fetching
+│ ├── stock_service_free_tier.py # Free tier optimized service
+│ └── historical_data_service.py # Historical data management
+├── analysis/
+│ ├── financial_analysis.py # Financial calculations
+│ ├── value_analysis.py # Value investing logic
+│ └── backtesting.py # Backtesting framework
+└── tests/
+│ ├── run_all_tests.py # Interactive test runner
+│ ├── test_env.py # Environment validation
+│ ├── simple_test.py # Basic functionality test
+│ ├── value_stocks_test.py # Value stock analysis
+│ ├── moderate_value_test.py # Relaxed criteria test
+│ └── README.md # Test documentation
 </pre>
 
 ## Value Investing Criteria
@@ -66,6 +79,47 @@ The tool screens stocks based on the following criteria:
 These can be changed based on your requirements.
 
 ## Usage
+
+### Quick Start with Tests
+
+1. **Run the interactive test suite** (recommended for first-time users):
+```bash
+python tests/run_all_tests.py
+```
+
+2. **Or run individual tests**:
+```bash
+# Validate your setup
+python tests/test_env.py
+
+# Test basic functionality
+python tests/simple_test.py
+
+# Test with value stocks
+python tests/value_stocks_test.py
+
+# Test backtesting system
+python tests/backtest_test.py
+```
+
+### Backtesting
+
+The system now includes a comprehensive backtesting framework:
+
+```bash
+# Run a value investing backtest
+python -c "
+from analysis.backtesting import run_value_investing_backtest
+result = run_value_investing_backtest(
+    tickers=['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA'],
+    start_date='2023-01-01',
+    end_date='2023-12-31',
+    criteria='moderate'
+)
+"
+```
+
+### Full Analysis
 
 1. Ensure your `.env` file is set up with required API keys
 2. Run the analysis:
@@ -115,4 +169,4 @@ The analysis generates a CSV file containing:
 ## Acknowledgments
 
 - OpenAI for GPT-3.5 API
-- yfinance for financial data
+- Financial Modeling Prep (FMP) for financial data

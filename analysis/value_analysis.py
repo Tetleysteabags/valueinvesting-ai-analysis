@@ -2,7 +2,7 @@ import pandas as pd
 import csv
 import os
 import logging
-from services.stock_service import fetch_stock_data_batch
+from services.stock_service_simple import fetch_stock_data_batch
 from services.openai_service import (
     sentiment_analysis, earnings_call, stock_insights, value_investing
 )
@@ -11,7 +11,7 @@ from analysis.financial_analysis import meets_value_criteria
 
 def process_stock(ticker):
     try:
-        data = fetch_stock_data(ticker)
+        data = fetch_stock_data_batch(ticker)
         if data is None:
             print(f"Stock {ticker} does not meet value criteria")
             return None  # ← Make sure to return None if it fails
