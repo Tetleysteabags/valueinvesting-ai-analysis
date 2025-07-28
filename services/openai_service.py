@@ -13,7 +13,7 @@ from config import OPENAI_API_KEY, CACHE_FILE
 openai.api_key = OPENAI_API_KEY
 
 def ask_openai(messages, temperature=0.2, max_tokens=250, max_retries=3):
-    cache = load_cache()
+    cache = load_cache(CACHE_FILE)
     cache_key = get_cache_key(messages)
 
     if cache_key in cache:

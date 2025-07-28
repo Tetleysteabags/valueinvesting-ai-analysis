@@ -109,16 +109,16 @@ def test_value_screening():
         if data:
             print(f"   P/E: {data.get('pe_ratio', 'N/A')}")
             print(f"   P/B: {data.get('price_to_book', 'N/A')}")
-            print(f"   D/E: {data.get('de_ratio', 'N/A')}")
-            print(f"   ROE: {data.get('roe_ratio', 'N/A')}")
+            print(f"   ROE: {data.get('roe', 'N/A')}")
+            print(f"   D/E: {data.get('debt_to_equity', 'N/A')}")
             
             # Check if meets moderate criteria
             from config import THRESHOLDS_MODERATE
             meets_criteria = (
                 data.get('pe_ratio', 999) < THRESHOLDS_MODERATE['pe'] and
                 data.get('price_to_book', 999) < THRESHOLDS_MODERATE['pb'] and
-                data.get('de_ratio', 999) < THRESHOLDS_MODERATE['de'] and
-                data.get('roe_ratio', 0) > THRESHOLDS_MODERATE['roe']
+                data.get('debt_to_equity', 999) < THRESHOLDS_MODERATE['de'] and
+                data.get('roe', 0) > THRESHOLDS_MODERATE['roe']
             )
             
             print(f"   Meets moderate criteria: {'✅' if meets_criteria else '❌'}")

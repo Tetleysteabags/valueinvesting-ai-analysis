@@ -55,9 +55,8 @@ def test_step_2_import_modules():
     
     modules_to_test = [
         ("services.historical_data_service", "Historical Data Service"),
-        ("services.stock_service_free_tier", "Stock Service"),
+        ("services.stock_service_v2", "Stock Service"),
         ("services.openai_service", "OpenAI Service"),
-        ("analysis.backtesting_optimized", "Backtesting Framework"),
         ("utils.cache", "Cache Utility"),
         ("utils.logging_setup", "Logging Setup")
     ]
@@ -86,22 +85,22 @@ def test_step_3_value_criteria_logic():
             "ticker": "AAPL",
             "pe_ratio": 25.5,
             "price_to_book": 15.2,
-            "de_ratio": 1.8,
-            "roe_ratio": 0.15
+            "debt_to_equity": 1.8,
+            "roe": 0.15
         },
         {
             "ticker": "MSFT", 
             "pe_ratio": 35.1,
             "price_to_book": 12.8,
-            "de_ratio": 0.9,
-            "roe_ratio": 0.18
+            "debt_to_equity": 0.9,
+            "roe": 0.18
         },
         {
             "ticker": "GOOGL",
             "pe_ratio": 28.3,
             "price_to_book": 6.5,
-            "de_ratio": 0.2,
-            "roe_ratio": 0.22
+            "debt_to_equity": 0.2,
+            "roe": 0.22
         }
     ]
     
@@ -114,8 +113,8 @@ def test_step_3_value_criteria_logic():
         meets_criteria = (
             stock['pe_ratio'] < THRESHOLDS['pe'] and
             stock['price_to_book'] < THRESHOLDS['pb'] and
-            stock['de_ratio'] < THRESHOLDS['de'] and
-            stock['roe_ratio'] > THRESHOLDS['roe']
+            stock['debt_to_equity'] < THRESHOLDS['de'] and
+            stock['roe'] > THRESHOLDS['roe']
         )
         if meets_criteria:
             strict_qualifiers.append(stock['ticker'])
@@ -132,8 +131,8 @@ def test_step_3_value_criteria_logic():
         meets_criteria = (
             stock['pe_ratio'] < THRESHOLDS_MODERATE['pe'] and
             stock['price_to_book'] < THRESHOLDS_MODERATE['pb'] and
-            stock['de_ratio'] < THRESHOLDS_MODERATE['de'] and
-            stock['roe_ratio'] > THRESHOLDS_MODERATE['roe']
+            stock['debt_to_equity'] < THRESHOLDS_MODERATE['de'] and
+            stock['roe'] > THRESHOLDS_MODERATE['roe']
         )
         if meets_criteria:
             moderate_qualifiers.append(stock['ticker'])
@@ -151,59 +150,8 @@ def test_step_4_backtesting_framework():
     print("🔄 STEP 4: Backtesting Framework")
     print("=" * 40)
     
-    try:
-        from analysis.backtesting_optimized import OptimizedValueInvestingBacktester, Position, BacktestResult
-        
-        # Test Position dataclass
-        print("📊 Testing Position dataclass...")
-        position = Position(
-            ticker="AAPL",
-            entry_date=datetime.now(),
-            entry_price=150.0,
-            shares=100
-        )
-        print(f"   ✅ Position created: {position.ticker} @ ${position.entry_price}")
-        
-        # Test BacktestResult dataclass
-        print("📊 Testing BacktestResult dataclass...")
-        result = BacktestResult(
-            strategy_name="Test",
-            start_date=datetime.now(),
-            end_date=datetime.now(),
-            initial_capital=100000,
-            final_capital=110000,
-            total_return=0.10,
-            annualized_return=0.12,
-            max_drawdown=-0.05,
-            sharpe_ratio=1.2,
-            num_trades=5,
-            win_rate=0.8,
-            positions=[],
-            equity_curve=None,
-            trades_df=None
-        )
-        print(f"   ✅ BacktestResult created: {result.strategy_name}")
-        
-        # Test OptimizedValueInvestingBacktester
-        print("📊 Testing OptimizedValueInvestingBacktester...")
-        backtester = OptimizedValueInvestingBacktester(
-            initial_capital=100000,
-            max_positions=10,
-            position_size=0.1
-        )
-        print(f"   ✅ Backtester created with ${backtester.initial_capital:,.2f} capital")
-        print(f"   📊 Max positions: {backtester.max_positions}")
-        print(f"   📈 Position size: {backtester.position_size:.1%}")
-        
-        # Test available capital
-        available_capital = backtester._get_available_capital()
-        print(f"   💵 Available capital: ${available_capital:,.2f}")
-        
-        print("   ✅ Backtesting framework test passed")
-        
-    except Exception as e:
-        print(f"   ❌ Backtesting framework error: {e}")
-        return False
+    print("   ⚠️  Backtesting framework removed - skipping test")
+    print("   (This module was deleted during cleanup)")
     
     print()
     return True

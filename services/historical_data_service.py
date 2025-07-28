@@ -15,6 +15,7 @@ import sqlite3
 from pathlib import Path
 import threading
 from dotenv import load_dotenv
+from services.fmp_client import client as fmp_client
 
 # Load environment variables
 load_dotenv()
@@ -90,36 +91,9 @@ class HistoricalDataService:
             
             conn.commit()
     
-    def _fmp_get(self, endpoint: str, params: dict = None) -> Optional[Dict]:
-        """Helper to GET FMP JSON data with rate limiting."""
-        if params is None:
-            params = {}
-        params["apikey"] = self.FMP_API_KEY
-        
-        try:
-            # Rate limiting
-            time.sleep(1)  # 1 second delay between calls
-            
-            import requests
-            url = f"{self.FMP_BASE}/{endpoint}"
-            response = requests.get(url, params=params, timeout=30)
-            
-            if response.status_code == 401:
-                logging.error("Invalid FMP API key")
-                return None
-            elif response.status_code == 429:
-                logging.warning("FMP API rate limit reached, waiting 60 seconds")
-                time.sleep(60)
-                return None
-            elif response.status_code != 200:
-                logging.error(f"HTTP {response.status_code}: {response.text}")
-                return None
-            
-            return response.json()
-            
-        except Exception as e:
-            logging.error(f"Error fetching {endpoint}: {e}")
-            return None
+    def _fmp_get(self, endpoint: str, params: dict = None):
+        """Delegate to shared FMP client."""
+        return fmp_client.get(endpoint, params=params)
     
     def fetch_historical_data(self, ticker: str, period: str = "5y", 
                             source: str = "fmp") -> Optional[pd.DataFrame]:

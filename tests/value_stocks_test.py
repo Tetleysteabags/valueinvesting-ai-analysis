@@ -75,8 +75,8 @@ def main():
             print(f"\n📊 Metrics for {ticker}:")
             print(f"   P/E Ratio: {data.get('pe_ratio', 'N/A')}")
             print(f"   Price/Book: {data.get('price_to_book', 'N/A')}")
-            print(f"   ROE: {data.get('roe_ratio', 'N/A')}")
-            print(f"   Debt/Equity: {data.get('de_ratio', 'N/A')}")
+            print(f"   ROE: {data.get('roe', 'N/A')}")
+            print(f"   Debt/Equity: {data.get('debt_to_equity', 'N/A')}")
             print(f"   Analyst Rating: {data.get('analyst_rating', 'N/A')}")
             
             # Check value criteria
@@ -98,8 +98,8 @@ def main():
                 print(f"❌ {ticker} does not meet value criteria")
                 print(f"   P/E: {data.get('pe_ratio', 'N/A')} (need < 10)")
                 print(f"   P/B: {data.get('price_to_book', 'N/A')} (need < 1.5)")
-                print(f"   ROE: {data.get('roe_ratio', 'N/A')} (need > 0.12)")
-                print(f"   D/E: {data.get('de_ratio', 'N/A')} (need < 1)")
+                print(f"   ROE: {data.get('roe', 'N/A')} (need > 0.12)")
+                print(f"   D/E: {data.get('debt_to_equity', 'N/A')} (need < 1)")
                 
         except Exception as e:
             print(f"❌ Error processing {ticker}: {e}")
@@ -119,7 +119,7 @@ def main():
         for result in results:
             print(f"   • {result['symbol']}: {result['company']}")
             print(f"     P/E: {result.get('pe_ratio', 'N/A'):.2f}, P/B: {result.get('price_to_book', 'N/A'):.2f}")
-            print(f"     ROE: {result.get('roe_ratio', 'N/A'):.2%}, Rating: {result.get('analyst_rating', 'N/A')}")
+            print(f"     ROE: {result.get('roe', 'N/A'):.2%}, Rating: {result.get('analyst_rating', 'N/A')}")
     else:
         print(f"\n❌ No stocks met the strict value criteria")
         print("💡 Consider relaxing the criteria or testing more stocks!")
