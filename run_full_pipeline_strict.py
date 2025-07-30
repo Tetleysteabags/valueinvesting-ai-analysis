@@ -94,7 +94,7 @@ def run_full_pipeline_strict():
                 tickers=qualifying_stocks,
                 start_date='2023-01-01',
                 end_date='2025-07-27',
-                rebalance_freq='M',
+                rebalance_freq='ME',
                 criteria_level='strict',
                 initial_capital=100000.0
             )
