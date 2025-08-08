@@ -9,15 +9,15 @@ Basic smoke‑test for ValueInvestingBacktester
 """
 
 import numpy as np
+import math
 import pandas as pd
 from datetime import datetime
-
+import logging
 # Allow "python tests/test_backtester_basic.py" from repo root
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from analysis.backtesting import backtest_value_strategy  
-from analysis.backtesting import optimize_parameters
+from analysis.backtesting import backtest_value_strategy, optimize_parameters
+from analysis import backtesting
 
 TICKERS = [
   'AIFU','ASC','ATHS','CIVI','EHLD','EMO','ESNT','EVT','EXG','FOF','GDO','GFR','GSL',
@@ -44,6 +44,8 @@ TICKERS = [
 
 START_DATE    = "2024-01-01"
 END_DATE      = "2025-06-30"
+TRAIN_START   = "2024-01-01"
+TRAIN_END     = "2024-12-31"
 INIT_CAPITAL  = 100_000.0
 
 
@@ -56,6 +58,9 @@ def main() -> None:
         initial_capital=INIT_CAPITAL,
     )
 
+
+    backtesting.logging.getLogger().setLevel(logging.ERROR)
+    
     # --- invariant 1: first portfolio value == initial capital ---
     first_val = result.portfolio_values.iloc[0]
     assert abs(first_val - INIT_CAPITAL) < 1e-6, f"First equity {first_val} ≠ {INIT_CAPITAL}"
@@ -65,13 +70,11 @@ def main() -> None:
 
     # --- invariant 3: final capital reflects reported total_return ---
     calc_return = (result.final_capital - INIT_CAPITAL) / INIT_CAPITAL
-    assert np.isclose(
-        calc_return, result.total_return, atol=1e-6
-    ), f"Return mismatch: {calc_return} vs {result.total_return}"
+    assert math.isclose(calc_return, result.total_return, rel_tol=1e-9), f"Return mismatch: {calc_return} vs {result.total_return}"
 
     # --- print quick summary ---
     print("\n✅ basic back‑test smoke‑test passed")
-    print(result.portfolio_values)
+    print(result.portfolio_values.describe())
     print(
         f"Total return {result.total_return:.2%}, "
         f"Vol {result.volatility:.2%}, Sharpe {result.sharpe_ratio:.2f}"
@@ -80,16 +83,19 @@ def main() -> None:
     print("\n🔍 running parameter‑grid smoke‑test…")
     opt_df = optimize_parameters(
         tickers=TICKERS,
-        start_date=START_DATE,
-        end_date=END_DATE,
+        start_date=TRAIN_START,
+        end_date=TRAIN_END,
         initial_capital=INIT_CAPITAL,
     )
     # invariant: we got at least one row back
     assert hasattr(opt_df, "shape") and opt_df.shape[0] > 0, "optimize_parameters returned no results"
     # invariant: must contain the columns we expect
-    required = {'profit_target','trailing_stop','stop_loss','rebalance_freq','sharpe_ratio'}
+    required = {'profit_target','trailing_stop','stop_loss','rebalance_freq','ema_period', 'sharpe_ratio'}
     missing = required - set(opt_df.columns)
     assert not missing, f"optimize_parameters missing columns: {missing}"
+    assert (result.cash_history >= -1e-6).all(), "Cash went negative at some point"
+    diff = (result.cash_history + result.position_values_sum) - result.portfolio_values
+    assert diff.abs().max() < 1e-4, "Cash+Positions ≠ Portfolio on some day"
     print("✅ parameter‑grid smoke‑test passed; found "
           f"{opt_df.shape[0]} combinations, top Sharpe "
           f"{opt_df['sharpe_ratio'].max():.2f}")
