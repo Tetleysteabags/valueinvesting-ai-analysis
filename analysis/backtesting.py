@@ -92,7 +92,7 @@ class ValueInvestingBacktester:
         criteria_level: str = "moderate"
     ):
         self.initial_capital = initial_capital
-        self.ema_period = ema_period,
+        self.ema_period = ema_period
         self.cash: float = initial_capital          # NEW – explicit cash balance
         self.total_transaction_costs: float = 0.0   # make sure it is set before use
         self.equity_curve: list[float] = []         # optional: full‑daily equity
@@ -100,11 +100,13 @@ class ValueInvestingBacktester:
         self.position_size = position_size
         self.transaction_cost = transaction_cost
         self.slippage = slippage
+        self.base_exit_profit_target = exit_profit_target  # remember the original
         self.exit_profit_target = exit_profit_target
         self.exit_roe_threshold = exit_roe_threshold
         self.exit_loss_stop = exit_loss_stop
         self.trailing_stop = trailing_stop
         self.criteria_level = criteria_level
+        self.use_r_multiple = True  
         
         # Initialize services
         self.historical_service = HistoricalDataService()
@@ -133,7 +135,7 @@ class ValueInvestingBacktester:
             # size_frac is e.g. 0.10 for a 10% target weight
         portfolio_val = self.cash + sum(p.current_value for p in self.positions.values())
         target_val = portfolio_val * size_frac
-        return max(int(round(target_val / price), 0))
+        return max(int(round(target_val / price)),0)
     
     def _calculate_portfolio_value_cached(self) -> float:
         return self.cash + sum(p.current_value for p in self.positions.values())
@@ -164,8 +166,13 @@ class ValueInvestingBacktester:
             return None
 
 
-    def _apply_transaction_costs(self, trade_value: float) -> float:
-        fee = trade_value * (self.transaction_cost + self.slippage)
+    def _apply_transaction_costs(self, trade_value, ticker=None):
+        fee_pct = 0.001
+        if ticker and not self.volumes_df.empty and ticker in self.volumes_df.columns:
+            adv = self.prices_df[ticker].iloc[-1] * self.volumes_df[ticker].rolling(20).mean().iloc[-1]
+            if adv < 2e6: fee_pct = 0.004       # illiquid
+            elif adv < 10e6: fee_pct = 0.002
+        fee = trade_value * (fee_pct + self.slippage)
         self.total_transaction_costs += fee
         return fee
 
@@ -174,13 +181,22 @@ class ValueInvestingBacktester:
         # update high watermark
         position.high_price = max(position.high_price, position.current_price)
         # once we’re +10%, don’t let it go back into a loss
-        if position.unrealized_return >= 0.10:
-            self.exit_loss_stop = 0.0
+        if position.unrealized_return >= 0.10 and position.unrealized_return < self.exit_profit_target:
+            loss_floor = 0.0
+            if position.unrealized_return <= loss_floor:
+                return True, "breakeven_stop"
+            else:
+                return True, "profit_target"
             
         # trailing stop (configurable)
         trailing_threshold = 1.0 - self.trailing_stop
         if position.current_price < trailing_threshold * position.high_price and position.unrealized_return > 0:
             return True, "trailing_stop"
+
+        if self.use_r_multiple:
+            # exit when unrealised_R drops by 0.5 R from peak
+            if position.unrealized_pnl < 0.5 * self.exit_profit_target * position.entry_price * position.shares:
+                return True,"give_back_halfR"
 
         if position.unrealized_return >= self.exit_profit_target:
             return True, "profit_target"
@@ -289,7 +305,7 @@ class ValueInvestingBacktester:
                 return False
             
         if ticker in self.prices_df.columns:
-            last_5 = self.prices_df[ticker].pct_change(5).loc[date]
+            last_5 = self.prices_df[ticker].pct_change(5).reindex([date]).iloc[0]
             if last_5 is not None and last_5 < 0:
                 print(f"🛑 Momentum veto: Skipping {ticker} (5‑day ret {last_5:.2%} < 0)")
                 return False
@@ -298,9 +314,11 @@ class ValueInvestingBacktester:
         hist_vol = None
         if ticker in self.prices_df.columns:
             hist_vol = self.prices_df[ticker].pct_change().rolling(20).std().loc[date]
-        if hist_vol is not None:
+        if hist_vol is not None and self.base_exit_profit_target == "auto":
             # set a dynamic target: 18×σ, clipped [15%,35%]
             self.exit_profit_target = max(0.15, min(0.35, 1.8 * hist_vol))
+        else:
+            self.exit_profit_target = self.base_exit_profit_target
         
         shares = self._calculate_position_size(price, size_frac)
         position_value = shares * price
@@ -443,6 +461,10 @@ class ValueInvestingBacktester:
         if N == 0:
             return
 
+        
+        universe = list(current_prices.index) # until we implement real scoring
+
+
         # 5a) Close anything we no longer want
         universe = list(current_prices.index)[:N]
         for t in list(self.positions):
@@ -467,6 +489,8 @@ class ValueInvestingBacktester:
         
         for ticker in universe:
             price = current_prices[ticker]
+            if price <= 0:
+                continue
             desired_shares = int(round(target_val / price))
             
             if desired_shares == 0:
@@ -517,70 +541,30 @@ class ValueInvestingBacktester:
         
         return total_value
     
-    def _log_snapshot(self, date, portfolio_value, current_prices):
-        pos_val = sum(
-            p.current_value for p in self.positions.values()
-            if not np.isnan(p.current_value) and p.current_value is not None
-        )
-        
-        # Handle NaN values in logging
-        if np.isnan(pos_val) or pos_val is None:
-            pos_val = 0.0
-        if np.isnan(portfolio_value) or portfolio_value is None:
-            portfolio_value = self.cash
-        
-        print(f"{date:%Y-%m-%d} │  Cash ${self.cash:,.2f} │  Positions ${pos_val:,.2f} "
-            f"({len(self.positions)} stk) │  Equity ${portfolio_value:,.2f}")
-
-    
-    def run_backtest(
-        self,
-        tickers: List[str],
-        start_date: str,
-        end_date: str,
-        rebalance_freq: str = 'ME'  # 'ME' for monthly-end, 'Q' for quarterly
-    ) -> BacktestResult:
-        """
-        Run the backtest.
-        
-        Args:
-            tickers: List of stock tickers to consider
-            start_date: Start date in 'YYYY-MM-DD' format
-            end_date: End date in 'YYYY-MM-DD' format
-            rebalance_freq: Rebalancing frequency ('M' or 'Q')
-        
-        Returns:
-            BacktestResult with performance metrics
-        """
-        print(f"🚀 Starting Value Investing Backtest")
-        print(f"📊 Strategy: {self.criteria_level.upper()} criteria")
-        print(f"💰 Initial Capital: ${self.initial_capital:,.2f}")
-        print(f"📈 Rebalancing: {rebalance_freq}")
-        print(f"📅 Period: {start_date} to {end_date}")
-        print(f"📋 Tickers: {len(tickers)} stocks")
-        print("=" * 60)
-        
-        # Reset state
-        self.cash = self.initial_capital
-        self.capital = self.initial_capital   # kept only for backwards compatibility
-        self.positions = {}
-        self.portfolio_values = []
-        self.trades = []
-        self.total_trades = 0
-        self.winning_trades = 0
-        self.total_transaction_costs = 0.0
-        
-        # Fetch historical price data
+    def _download_price_matrix(self, tickers: List[str], start_date: str, end_date: str) -> pd.DataFrame:
+        """Download and prepare price matrix for backtesting."""
         print("📊 Fetching historical price data...")
         price_data = {}
         for ticker in tickers:
             try:
-                hist_data = self.historical_service.fetch_historical_data(ticker, period="5y")
+                hist_data = self.historical_service.fetch_historical_data(ticker, period="2y")
                 if hist_data is not None and not hist_data.empty:
                     # Set Date as index and extract Close prices
                     hist_data = hist_data.set_index('Date')
                     # Handle duplicate dates by keeping the last value
-                    price_series = hist_data['Close'].groupby(level=0).last()
+                    # Check what columns are actually available
+                    if 'Adj Close' in hist_data.columns:
+                        price_series = hist_data['Adj Close'].copy()
+                        price_series = hist_data['Adj Close'].groupby(level=0).last()
+                    elif 'adjClose' in hist_data.columns:
+                        price_series = hist_data['adjClose'].copy()
+                        price_series = hist_data['adjClose'].groupby(level=0).last()
+                    elif 'Close' in hist_data.columns:
+                        price_series = hist_data['Close'].copy()
+                        price_series = hist_data['Close'].groupby(level=0).last()
+                    else:
+                        print(f"⚠️  Available columns for {ticker}: {hist_data.columns.tolist()}")
+                        continue
                     price_data[ticker] = price_series
             except Exception as e:
                 print(f"⚠️  Could not fetch data for {ticker}: {e}")
@@ -597,9 +581,6 @@ class ValueInvestingBacktester:
         keep = prices_df.columns[prices_df.isna().sum() < 60]
         prices_df = prices_df[keep]
         tickers = keep.tolist()
-        
-        # Store prices_df in backtester instance for SMA calculations
-        self.prices_df = prices_df
         
         min_days   = 200      # you decide
         min_price  = 5.0      # avoid sub‑pennies
@@ -631,6 +612,82 @@ class ValueInvestingBacktester:
         
         if prices_df.empty:
             raise ValueError("No price data available for the specified date range")
+        
+        return prices_df
+
+    def _log_snapshot(self, date, portfolio_value, current_prices):
+        pos_val = sum(
+            p.current_value for p in self.positions.values()
+            if not np.isnan(p.current_value) and p.current_value is not None
+        )
+        
+        # Handle NaN values in logging
+        if np.isnan(pos_val) or pos_val is None:
+            pos_val = 0.0
+        if np.isnan(portfolio_value) or portfolio_value is None:
+            portfolio_value = self.cash
+        
+        print(f"{date:%Y-%m-%d} │  Cash ${self.cash:,.2f} │  Positions ${pos_val:,.2f} "
+            f"({len(self.positions)} stk) │  Equity ${portfolio_value:,.2f}")
+
+    
+    def run_backtest(
+        self,
+        tickers: List[str],
+        start_date: str,
+        end_date: str,
+        rebalance_freq: str = 'ME',  # 'ME' for monthly-end, 'Q' for quarterly
+        prices_df: pd.DataFrame | None = None  # NEW: optional pre-fetched price data
+    ) -> BacktestResult:
+        """
+        Run the backtest.
+        
+        Args:
+            tickers: List of stock tickers to consider
+            start_date: Start date in 'YYYY-MM-DD' format
+            end_date: End date in 'YYYY-MM-DD' format
+            rebalance_freq: Rebalancing frequency ('M' or 'Q')
+        
+        Returns:
+            BacktestResult with performance metrics
+        """
+        print(f"🚀 Starting Value Investing Backtest")
+        print(f"📊 Strategy: {self.criteria_level.upper()} criteria")
+        print(f"💰 Initial Capital: ${self.initial_capital:,.2f}")
+        print(f"📈 Rebalancing: {rebalance_freq}")
+        print(f"📅 Period: {start_date} to {end_date}")
+        print(f"📋 Tickers: {len(tickers)} stocks")
+        print("=" * 60)
+        
+        # Reset state
+        self.cash = self.initial_capital
+        self.capital = self.initial_capital   # kept only for backwards compatibility
+        self.positions = {}
+        self.portfolio_values = []
+        self.trades = []
+        self.total_trades = 0
+        self.winning_trades = 0
+        self.total_transaction_costs = 0.0
+        
+        # Handle price data
+        if prices_df is None:
+            # Download price data if not provided
+            prices_df = self._download_price_matrix(tickers, start_date, end_date)
+        else:
+            # Use provided price data (make a copy to avoid modifying original)
+            prices_df = prices_df.copy()
+            # Filter to date range
+            start_dt = pd.to_datetime(start_date)
+            end_dt = pd.to_datetime(end_date)
+            prices_df = prices_df[(prices_df.index >= start_dt) & (prices_df.index <= end_dt)]
+            
+            if prices_df.empty:
+                raise ValueError("No price data available for the specified date range")
+        
+        # Store prices_df in backtester instance for SMA calculations
+        self.prices_df = prices_df
+        # Initialize volumes_df as empty DataFrame since we don't fetch volume data
+        self.volumes_df = pd.DataFrame()
         
         print(f"📊 Price data loaded: {len(prices_df)} days, {len(prices_df.columns)} stocks")
         
@@ -896,26 +953,10 @@ def backtest_value_strategy(
     return backtester.run_backtest(tickers, start_date, end_date, rebalance_freq)
 
 
-def optimize_parameters(
-    tickers: List[str],
-    start_date: str,
-    end_date: str,
-    initial_capital: float = 100000.0
-) -> pd.DataFrame:
+def _grid_search(tickers: List[str], start_date: str, end_date: str, initial_capital: float) -> pd.DataFrame:
     """
-    Grid search for optimal parameters.
-    
-    Args:
-        tickers: List of stock tickers
-        start_date: Start date
-        end_date: End date
-        initial_capital: Initial capital
-    
-    Returns:
-        DataFrame with results for each parameter combination
+    Helper function to run grid search for parameter optimization.
     """
-    print("🔍 Starting parameter optimization...")
-    
     # Parameter combinations to test
     param_combinations = []
     
@@ -950,25 +991,32 @@ def optimize_parameters(
     
     print(f"📊 Testing {len(param_combinations)} parameter combinations...")
     
-    results = []
+    # -------- one-time download ----------
+    print("📊 Pre-fetching price data for optimization...")
+    temp_backtester = ValueInvestingBacktester(initial_capital=initial_capital)
+    master_prices = temp_backtester._download_price_matrix(tickers, start_date, end_date)
+    
+    # -------- grid search ---------------
+    rows = []
     
     for i, params in enumerate(param_combinations):
         print(f"🔄 Testing combination {i+1}/{len(param_combinations)}: {params}")
         
         try:
             backtester = ValueInvestingBacktester(
-            initial_capital     = initial_capital,
-            exit_profit_target  = params['profit_target'],
-            trailing_stop       = params['trailing_stop'],
-            exit_loss_stop      = params['stop_loss'],
-            ema_period          = params['ema_period']
+                initial_capital     = initial_capital,
+                exit_profit_target  = params['profit_target'],
+                trailing_stop       = params['trailing_stop'],
+                exit_loss_stop      = params['stop_loss'],
+                ema_period          = params['ema_period']
             )
             
             result = backtester.run_backtest(
                 tickers=tickers,
                 start_date=start_date,
                 end_date=end_date,
-                rebalance_freq=params['rebalance_freq']
+                rebalance_freq=params['rebalance_freq'],
+                prices_df=master_prices  # ← reuse pre-fetched data
             )
             
             # Skip combinations that opened no trades
@@ -986,7 +1034,7 @@ def optimize_parameters(
             except:
                 alpha = result.total_return
             
-            results.append({
+            rows.append({
                 'profit_target': params['profit_target'],
                 'trailing_stop': params['trailing_stop'],
                 'stop_loss': params['stop_loss'],
@@ -1007,7 +1055,7 @@ def optimize_parameters(
             continue
     
     # Create results DataFrame
-    results_df = pd.DataFrame(results)
+    results_df = pd.DataFrame(rows)
     
     # Check if we have any results
     if results_df.empty:
@@ -1021,15 +1069,69 @@ def optimize_parameters(
     print("=" * 80)
     print(results_df.head(10).to_string(index=False))
     
+    return results_df
+
+
+def optimize_parameters(
+    tickers: List[str],
+    start_date: str,
+    end_date: str,
+    initial_capital: float = 100000.0
+) -> pd.DataFrame:
+    """
+    Grid search for optimal parameters.
+    
+    Args:
+        tickers: List of stock tickers
+        start_date: Start date
+        end_date: End date
+        initial_capital: Initial capital
+    
+    Returns:
+        DataFrame with results for each parameter combination
+    """
+    print("🔍 Starting parameter optimization...")
+    
+    train_start = '2024-01-01'
+    train_end   = '2024-12-31'
+    test_start  = '2025-01-01'
+    
+    # optimise on 2024 data
+    opt_df = _grid_search(tickers, train_start, train_end, initial_capital)
+
+    # test on 2025 data
+    if not opt_df.empty:
+        test_df = backtest_value_strategy(tickers, start_date=test_start, end_date=end_date, rebalance_freq=opt_df.iloc[0]['rebalance_freq'], initial_capital=initial_capital)
+    else:
+        test_df = backtest_value_strategy(tickers, start_date=test_start, end_date=end_date, initial_capital=initial_capital)
+
+    # combine results
+    results = pd.concat([opt_df, test_df.sharpe_ratio.to_frame()])
+    results.to_csv('results.csv')
+    
     # Save results
     results_file = f"parameter_optimization_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
-    results_df.to_csv(results_file, float_format="%.5g", index=False)
-    best = results_df.iloc[0]
-    print(f"🥇 Best: PT {best.profit_target:.0%}, TS {best.trailing_stop:.0%}, "
-    f"SL {best.stop_loss:.0%}, EMA {best.ema_period}, freq={best.rebalance_freq} → "
-    f"Sharpe {best.sharpe_ratio:.2f}, α {best.alpha:.2%}")
+    opt_df.to_csv(results_file, float_format="%.5g", index=False)
+    
+    # run with best params on 2025 data
+    if not opt_df.empty:
+        best = opt_df.iloc[0]
+        best_tester = ValueInvestingBacktester(
+            initial_capital=initial_capital,
+            exit_profit_target=best['profit_target'],
+            trailing_stop=best['trailing_stop'],
+            exit_loss_stop=best['stop_loss'],
+            ema_period=best['ema_period']
+        )
+        result_oos = best_tester.run_backtest(
+            tickers, start_date=test_start, end_date='2025-06-30',
+            rebalance_freq=best['rebalance_freq']
+        )
+        print(f"🥇 Best: PT {best['profit_target']:.0%}, TS {best['trailing_stop']:.0%}, "
+        f"SL {best['stop_loss']:.0%}, EMA {best['ema_period']}, freq={best['rebalance_freq']} → "
+        f"Sharpe {best['sharpe_ratio']:.2f}, α {best['alpha']:.2%}")
 
     print(f"\n💾 Full results saved to: {results_file}")
     
-    return results_df
+    return opt_df
 
