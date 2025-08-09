@@ -21,6 +21,7 @@ from pathlib import Path
 from typing import Dict, List, Any, Optional, Tuple
 import sys
 import os
+import logging
 
 # Add services to path
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
@@ -100,6 +101,8 @@ class CustomValueInvestingBacktester:
         self.total_trades = 0
         self.winning_trades = 0
         self.transaction_costs = 0.0
+        # Cache fundamentals for the run
+        self._fundamentals_cache: Dict[str, Dict] = {}
 
     def _download_price_matrix(
         self, tickers: List[str], start: str, end: str
@@ -195,9 +198,9 @@ class CustomValueInvestingBacktester:
             if ex:
                 self._close(t, prices[t], reason, date)
 
-        # 2) fetch fundamentals using FMP
+        # 2) get fundamentals from cache (fetched once per run)
         available_tickers = [t for t in prices.index if not pd.isna(prices[t])]
-        fdata = self._get_fundamental_data(available_tickers)
+        fdata = {t: self._fundamentals_cache.get(t, {}) for t in available_tickers}
         
         # 3) compute factor ranks
         pe_data = {}
@@ -281,12 +284,22 @@ class CustomValueInvestingBacktester:
         """Run the custom backtest"""
         # 1) load price matrix once
         self.prices_df = self._download_price_matrix(tickers, start_date, end_date)
+        logging.info(f"[Custom] Loaded price matrix: {len(self.prices_df)} rows, {self.prices_df.shape[1]} tickers")
+        # Fetch fundamentals once for the universe (TTM snapshot reused across run)
+        try:
+            self._fundamentals_cache = self._get_fundamental_data(list(self.prices_df.columns))
+            logging.info(f"[Custom] Fundamentals fetched once for {len(self._fundamentals_cache)} tickers")
+        except Exception:
+            self._fundamentals_cache = {}
         dates = trading_days_aligner(self.prices_df.index)(
             pd.date_range(start_date, end_date, freq=rebalance_freq)
         )
         reb_set = set(dates)
+        logging.info(f"[Custom] Rebalance dates: {len(dates)}")
 
-        for day in self.prices_df.index:
+        total_days = len(self.prices_df.index)
+        step = max(1, total_days // int(os.getenv("BT_PROGRESS_STEPS", "10")))
+        for i, day in enumerate(self.prices_df.index, 1):
             prices = self.prices_df.loc[day]
             # daily exits
             self._update_positions(prices)
@@ -305,6 +318,8 @@ class CustomValueInvestingBacktester:
             self.portfolio_values.append(portv)
             self.cash_history.append(self.cash)
             self.position_values.append(sum(p.current_value for p in self.positions.values()))
+            if i % step == 0 or i == total_days:
+                logging.info(f"[Custom] Progress: {i}/{total_days} days ({i/total_days:.0%})")
 
         # Calculate performance metrics
         eq = pd.Series(self.portfolio_values, index=self.dates)
@@ -412,14 +427,19 @@ class VectorBTBacktester:
         roe = pd.DataFrame(index=as_of_dates, columns=tickers)
         mom = prices.pct_change(252).loc[as_of_dates]
         
-        for date in as_of_dates:
-            f = self._get_fundamental_data(tickers)
+        # Fetch fundamentals once for all tickers; reuse across dates (TTM changes slow)
+        f = self._get_fundamental_data(tickers)
+        total = len(as_of_dates)
+        step = max(1, total // int(os.getenv("BT_PROGRESS_STEPS", "10")))
+        for idx, date in enumerate(as_of_dates, 1):
             
             for ticker, data in f.items():
                 if data.get('pe_ratio') is not None:
                     pe.loc[date, ticker] = data['pe_ratio']
                 if data.get('roe') is not None:
                     roe.loc[date, ticker] = data['roe']
+            if idx % step == 0 or idx == total:
+                logging.info(f"[VectorBT] Factor progress: {idx}/{total} rebalance dates ({idx/total:.0%})")
         
         # rank factors
         pe_r = pe.rank(axis=1, pct=True, ascending=True)
@@ -435,6 +455,7 @@ class VectorBTBacktester:
         """Run VectorBT backtest"""
         # Download price data
         P = self.download_price_matrix(tickers, start_date, end_date)
+        logging.info(f"[VectorBT] Downloaded price data: {len(P)} rows, {P.shape[1]} tickers")
         
         # Get rebalance dates
         if rebalance_freq == "ME":
@@ -445,9 +466,11 @@ class VectorBTBacktester:
         else:
             rebalance_dates = pd.date_range(start_date, end_date, freq=rebalance_freq)
             rebalance_dates = trading_days_aligner(P.index)(rebalance_dates)
+        logging.info(f"[VectorBT] Rebalance dates: {len(rebalance_dates)}")
 
         # Compute factor scores
         score = self.compute_factors(P, rebalance_dates, tickers)
+        logging.info("[VectorBT] Factor scores computed")
 
         # Generate entry signals
         entries = pd.DataFrame(False, index=P.index, columns=P.columns)
@@ -466,6 +489,7 @@ class VectorBTBacktester:
             fees=self.transaction_cost,
             slippage=self.slippage
         )
+        logging.info("[VectorBT] Portfolio run complete")
 
         # Calculate performance metrics
         stats = pf.stats()
@@ -571,27 +595,3 @@ def print_backtest_results(result: BacktestResult):
     print(f"Benchmark Return: {result.benchmark_return:.2%}")
     print(f"Alpha: {result.alpha:.2%}")
     print(f"{'='*60}")
-
-
-if __name__ == "__main__":
-    # Example usage
-    TICKERS = [
-        "AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NVDA", "NFLX",
-        "JPM", "JNJ", "PG", "UNH", "HD", "DIS", "PYPL", "ADBE", "CRM",
-        "INTC", "V", "WMT", "MA", "PFE", "ABT", "KO", "PEP"
-    ]
-    
-    # Run both implementations for comparison
-    print("Running VectorBT backtest...")
-    vbt_result = run_combined_backtest(
-        TICKERS, "2023-01-01", "2024-12-31", 
-        use_vectorbt=True
-    )
-    print_backtest_results(vbt_result)
-    
-    print("\nRunning Custom backtest...")
-    custom_result = run_combined_backtest(
-        TICKERS, "2023-01-01", "2024-12-31", 
-        use_vectorbt=False
-    )
-    print_backtest_results(custom_result) 
