@@ -6,8 +6,6 @@ This directory contains a comprehensive backtesting system that combines the bes
 
 - `combined_backtesting.py` - Main backtesting system with both implementations
 - `test_combined_backtesting.py` - Test script to verify functionality
-- `backstesting_vectorbt.py` - Original custom backtesting implementation
-- `vectorbt.py` - Original VectorBT-based implementation
 
 ## Features
 
