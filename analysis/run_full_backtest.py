@@ -10,6 +10,7 @@ from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from combined_backtesting import run_combined_backtest, print_backtest_results
+import logging
 from tickers_full import TICKERS
 
 
@@ -19,6 +20,15 @@ def main() -> None:
     initial_capital = float(os.getenv("BT_INIT", "100000"))
     use_vectorbt = os.getenv("BT_USE_VBT", "1") not in {"0", "false", "False"}
     rebalance = os.getenv("BT_FREQ", "ME")
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)s %(message)s",
+        handlers=[
+            logging.StreamHandler(sys.stdout),
+            logging.FileHandler(os.path.join(os.path.dirname(__file__), "full_backtest.log"), mode="w")
+        ]
+    )
 
     result = run_combined_backtest(
         tickers=TICKERS,

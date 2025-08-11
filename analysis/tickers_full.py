@@ -2,7 +2,6 @@
 """
 Full ticker universe for backtesting.
 
-Source: extracted from `tests/debug_backtest.py`.
 """
 
 TICKERS = [

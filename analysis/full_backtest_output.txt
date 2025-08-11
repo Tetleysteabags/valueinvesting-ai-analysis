@@ -1,0 +1,555 @@
+2025-08-09 18:12:30,938 INFO Saved 219 records for AIFU
+2025-08-09 18:12:30,938 INFO ✅ Successfully fetched 219 records for AIFU
+2025-08-09 18:12:31,233 INFO Saved 3024 records for ASC
+2025-08-09 18:12:31,233 INFO ✅ Successfully fetched 3024 records for ASC
+2025-08-09 18:12:31,271 INFO Saved 351 records for ATHS
+2025-08-09 18:12:31,271 INFO ✅ Successfully fetched 351 records for ATHS
+2025-08-09 18:12:31,480 INFO Saved 3431 records for CIVI
+2025-08-09 18:12:31,481 INFO ✅ Successfully fetched 3431 records for CIVI
+2025-08-09 18:12:31,496 INFO Saved 107 records for EHLD
+2025-08-09 18:12:31,497 INFO ✅ Successfully fetched 107 records for EHLD
+2025-08-09 18:12:31,706 INFO Saved 3562 records for EMO
+2025-08-09 18:12:31,707 INFO ✅ Successfully fetched 3562 records for EMO
+2025-08-09 18:12:31,881 INFO Saved 2960 records for ESNT
+2025-08-09 18:12:31,882 INFO ✅ Successfully fetched 2960 records for ESNT
+2025-08-09 18:12:32,194 INFO Saved 5502 records for EVT
+2025-08-09 18:12:32,194 INFO ✅ Successfully fetched 5502 records for EVT
+2025-08-09 18:12:32,463 INFO Saved 4645 records for EXG
+2025-08-09 18:12:32,464 INFO ✅ Successfully fetched 4645 records for EXG
+2025-08-09 18:12:32,733 INFO Saved 4707 records for FOF
+2025-08-09 18:12:32,733 INFO ✅ Successfully fetched 4707 records for FOF
+2025-08-09 18:12:32,958 INFO Saved 3950 records for GDO
+2025-08-09 18:12:32,959 INFO ✅ Successfully fetched 3950 records for GDO
+2025-08-09 18:12:32,996 INFO Saved 477 records for GFR
+2025-08-09 18:12:32,996 INFO ✅ Successfully fetched 477 records for GFR
+2025-08-09 18:12:33,265 INFO Saved 4744 records for GSL
+2025-08-09 18:12:33,266 INFO ✅ Successfully fetched 4744 records for GSL
+2025-08-09 18:12:33,577 INFO Saved 5399 records for HTD
+2025-08-09 18:12:33,577 INFO ✅ Successfully fetched 5399 records for HTD
+2025-08-09 18:12:34,116 INFO Saved 9639 records for ICCC
+2025-08-09 18:12:34,117 INFO ✅ Successfully fetched 9639 records for ICCC
+2025-08-09 18:12:34,380 INFO Saved 4622 records for JCE
+2025-08-09 18:12:34,380 INFO ✅ Successfully fetched 4622 records for JCE
+2025-08-09 18:12:34,694 INFO Saved 5551 records for MHI
+2025-08-09 18:12:34,694 INFO ✅ Successfully fetched 5551 records for MHI
+2025-08-09 18:12:35,183 INFO Saved 8563 records for MTG
+2025-08-09 18:12:35,184 INFO ✅ Successfully fetched 8563 records for MTG
+2025-08-09 18:12:35,372 INFO Saved 3235 records for NXG
+2025-08-09 18:12:35,373 INFO ✅ Successfully fetched 3235 records for NXG
+2025-08-09 18:12:35,862 INFO Saved 8977 records for PDT
+2025-08-09 18:12:35,863 INFO ✅ Successfully fetched 8977 records for PDT
+2025-08-09 18:12:36,452 INFO Saved 8186 records for SITC
+2025-08-09 18:12:36,453 INFO ✅ Successfully fetched 8186 records for SITC
+2025-08-09 18:12:36,647 INFO Saved 3322 records for SPLP
+2025-08-09 18:12:36,648 INFO ✅ Successfully fetched 3322 records for SPLP
+2025-08-09 18:12:36,875 INFO Saved 3864 records for STNG
+2025-08-09 18:12:36,876 INFO ✅ Successfully fetched 3864 records for STNG
+2025-08-09 18:12:37,176 INFO Saved 5399 records for TYG
+2025-08-09 18:12:37,177 INFO ✅ Successfully fetched 5399 records for TYG
+2025-08-09 18:12:37,287 INFO Saved 1795 records for UNMA
+2025-08-09 18:12:37,288 INFO ✅ Successfully fetched 1795 records for UNMA
+2025-08-09 18:12:37,411 INFO Saved 2116 records for VIASP
+2025-08-09 18:12:37,411 INFO ✅ Successfully fetched 2116 records for VIASP
+2025-08-09 18:12:37,475 INFO Saved 978 records for ACT
+2025-08-09 18:12:37,475 INFO ✅ Successfully fetched 978 records for ACT
+2025-08-09 18:12:38,277 INFO Saved 14495 records for ADX
+2025-08-09 18:12:38,279 INFO ✅ Successfully fetched 14495 records for ADX
+2025-08-09 18:12:38,610 INFO Saved 5921 records for AFB
+2025-08-09 18:12:38,610 INFO ✅ Successfully fetched 5921 records for AFB
+2025-08-09 18:12:38,891 INFO Saved 4790 records for AGD
+2025-08-09 18:12:38,891 INFO ✅ Successfully fetched 4790 records for AGD
+2025-08-09 18:12:39,000 INFO Saved 1838 records for AGMH
+2025-08-09 18:12:39,000 INFO ✅ Successfully fetched 1838 records for AGMH
+2025-08-09 18:12:39,106 INFO Saved 1767 records for AMAL
+2025-08-09 18:12:39,107 INFO ✅ Successfully fetched 1767 records for AMAL
+2025-08-09 18:12:39,371 INFO Saved 4664 records for AOD
+2025-08-09 18:12:39,371 INFO ✅ Successfully fetched 4664 records for AOD
+2025-08-09 18:12:39,393 INFO Saved 266 records for ARDT
+2025-08-09 18:12:39,393 INFO ✅ Successfully fetched 266 records for ARDT
+2025-08-09 18:12:39,473 INFO Saved 1264 records for ASGI
+2025-08-09 18:12:39,473 INFO ✅ Successfully fetched 1264 records for ASGI
+2025-08-09 18:12:39,543 INFO Saved 1110 records for ATCH
+2025-08-09 18:12:39,543 INFO ✅ Successfully fetched 1110 records for ATCH
+2025-08-09 18:12:39,799 INFO Saved 4602 records for AWP
+2025-08-09 18:12:39,800 INFO ✅ Successfully fetched 4602 records for AWP
+2025-08-09 18:12:40,112 INFO Saved 5563 records for AXS
+2025-08-09 18:12:40,113 INFO ✅ Successfully fetched 5563 records for AXS
+2025-08-09 18:12:40,407 INFO Saved 3213 records for BGH
+2025-08-09 18:12:40,408 INFO ✅ Successfully fetched 3213 records for BGH
+2025-08-09 18:12:40,614 INFO Saved 3655 records for BGX
+2025-08-09 18:12:40,614 INFO ✅ Successfully fetched 3655 records for BGX
+2025-08-09 18:12:40,734 INFO Saved 2028 records for BHF
+2025-08-09 18:12:40,734 INFO ✅ Successfully fetched 2028 records for BHF
+2025-08-09 18:12:40,837 INFO Saved 1734 records for BHFAL
+2025-08-09 18:12:40,838 INFO ✅ Successfully fetched 1734 records for BHFAL
+2025-08-09 18:12:40,901 INFO Saved 938 records for BHFAM
+2025-08-09 18:12:40,901 INFO ✅ Successfully fetched 938 records for BHFAM
+2025-08-09 18:12:40,975 INFO Saved 1190 records for BHFAN
+2025-08-09 18:12:40,975 INFO ✅ Successfully fetched 1190 records for BHFAN
+2025-08-09 18:12:41,057 INFO Saved 1314 records for BHFAO
+2025-08-09 18:12:41,057 INFO ✅ Successfully fetched 1314 records for BHFAO
+2025-08-09 18:12:41,073 INFO Saved 115 records for BMGL
+2025-08-09 18:12:41,073 INFO ✅ Successfully fetched 115 records for BMGL
+2025-08-09 18:12:41,506 INFO Saved 7798 records for BTO
+2025-08-09 18:12:41,507 INFO ✅ Successfully fetched 7798 records for BTO
+2025-08-09 18:12:41,775 INFO Saved 4685 records for BTZ
+2025-08-09 18:12:41,776 INFO ✅ Successfully fetched 4685 records for BTZ
+2025-08-09 18:12:41,970 INFO Saved 3361 records for BWG
+2025-08-09 18:12:41,971 INFO ✅ Successfully fetched 3361 records for BWG
+2025-08-09 18:12:42,262 INFO Saved 5229 records for BXMX
+2025-08-09 18:12:42,262 INFO ✅ Successfully fetched 5229 records for BXMX
+2025-08-09 18:12:43,069 INFO Saved 13427 records for CAG
+2025-08-09 18:12:43,070 INFO ✅ Successfully fetched 13427 records for CAG
+2025-08-09 18:12:43,091 INFO Saved 211 records for CBNA
+2025-08-09 18:12:43,092 INFO ✅ Successfully fetched 211 records for CBNA
+2025-08-09 18:12:43,583 INFO Saved 8927 records for CEE
+2025-08-09 18:12:43,584 INFO ✅ Successfully fetched 8927 records for CEE
+2025-08-09 18:12:44,372 INFO Saved 14284 records for CET
+2025-08-09 18:12:44,373 INFO ✅ Successfully fetched 14284 records for CET
+2025-08-09 18:12:44,441 INFO Saved 1061 records for CGABL
+2025-08-09 18:12:44,442 INFO ✅ Successfully fetched 1061 records for CGABL
+2025-08-09 18:12:44,903 INFO Saved 8329 records for CHN
+2025-08-09 18:12:44,904 INFO ✅ Successfully fetched 8329 records for CHN
+2025-08-09 18:12:45,224 INFO Saved 5587 records for CHY
+2025-08-09 18:12:45,225 INFO ✅ Successfully fetched 5587 records for CHY
+2025-08-09 18:12:45,744 INFO Saved 9332 records for CIF
+2025-08-09 18:12:45,745 INFO ✅ Successfully fetched 9332 records for CIF
+2025-08-09 18:12:46,324 INFO Saved 9551 records for CLM
+2025-08-09 18:12:46,325 INFO ✅ Successfully fetched 9551 records for CLM
+2025-08-09 18:12:46,537 INFO Saved 3712 records for CMRE
+2025-08-09 18:12:46,537 INFO ✅ Successfully fetched 3712 records for CMRE
+2025-08-09 18:12:47,069 INFO Saved 9672 records for CMU
+2025-08-09 18:12:47,070 INFO ✅ Successfully fetched 9672 records for CMU
+2025-08-09 18:12:47,265 INFO Saved 3395 records for CPAC
+2025-08-09 18:12:47,265 INFO ✅ Successfully fetched 3395 records for CPAC
+2025-08-09 18:12:47,354 INFO Saved 1432 records for CPZ
+2025-08-09 18:12:47,354 INFO ✅ Successfully fetched 1432 records for CPZ
+2025-08-09 18:12:47,510 INFO Saved 2626 records for CRC
+2025-08-09 18:12:47,510 INFO ✅ Successfully fetched 2626 records for CRC
+2025-08-09 18:12:47,816 INFO Saved 5482 records for CRI
+2025-08-09 18:12:47,817 INFO ✅ Successfully fetched 5482 records for CRI
+2025-08-09 18:12:48,338 INFO Saved 9186 records for CXE
+2025-08-09 18:12:48,339 INFO ✅ Successfully fetched 9186 records for CXE
+2025-08-09 18:12:48,536 INFO Saved 3403 records for DBL
+2025-08-09 18:12:48,536 INFO ✅ Successfully fetched 3403 records for DBL
+2025-08-09 18:12:48,598 INFO Saved 989 records for DDI
+2025-08-09 18:12:48,598 INFO ✅ Successfully fetched 989 records for DDI
+2025-08-09 18:12:48,977 INFO Saved 6782 records for DDT
+2025-08-09 18:12:48,978 INFO ✅ Successfully fetched 6782 records for DDT
+2025-08-09 18:12:49,167 INFO Saved 3071 records for DFP
+2025-08-09 18:12:49,167 INFO ✅ Successfully fetched 3071 records for DFP
+2025-08-09 18:12:49,502 INFO Saved 5992 records for DGICA
+2025-08-09 18:12:49,503 INFO ✅ Successfully fetched 5992 records for DGICA
+2025-08-09 18:12:50,045 INFO Saved 9769 records for DGICB
+2025-08-09 18:12:50,046 INFO ✅ Successfully fetched 9769 records for DGICB
+2025-08-09 18:12:50,219 INFO Saved 2951 records for DLNG
+2025-08-09 18:12:50,219 INFO ✅ Successfully fetched 2951 records for DLNG
+2025-08-09 18:12:50,303 INFO Saved 1371 records for DLY
+2025-08-09 18:12:50,303 INFO ✅ Successfully fetched 1371 records for DLY
+2025-08-09 18:12:50,829 INFO Saved 9234 records for DMF
+2025-08-09 18:12:50,830 INFO ✅ Successfully fetched 9234 records for DMF
+2025-08-09 18:12:51,450 INFO Saved 9712 records for DNP
+2025-08-09 18:12:51,451 INFO ✅ Successfully fetched 9712 records for DNP
+2025-08-09 18:12:51,672 INFO Saved 3530 records for DPG
+2025-08-09 18:12:51,672 INFO ✅ Successfully fetched 3530 records for DPG
+2025-08-09 18:12:52,113 INFO Saved 7862 records for DRD
+2025-08-09 18:12:52,114 INFO ✅ Successfully fetched 7862 records for DRD
+2025-08-09 18:12:52,299 INFO Saved 3091 records for DSL
+2025-08-09 18:12:52,299 INFO ✅ Successfully fetched 3091 records for DSL
+2025-08-09 18:12:52,681 INFO Saved 6884 records for DSU
+2025-08-09 18:12:52,681 INFO ✅ Successfully fetched 6884 records for DSU
+2025-08-09 18:12:52,746 INFO Saved 970 records for ECAT
+2025-08-09 18:12:52,746 INFO ✅ Successfully fetched 970 records for ECAT
+2025-08-09 18:12:53,286 INFO Saved 9859 records for ECF
+2025-08-09 18:12:53,286 INFO ✅ Successfully fetched 9859 records for ECF
+2025-08-09 18:12:53,380 INFO Saved 1520 records for EIC
+2025-08-09 18:12:53,380 INFO ✅ Successfully fetched 1520 records for EIC
+2025-08-09 18:12:53,697 INFO Saved 5774 records for EIM
+2025-08-09 18:12:53,698 INFO ✅ Successfully fetched 5774 records for EIM
+2025-08-09 18:12:54,233 INFO Saved 9687 records for EMF
+2025-08-09 18:12:54,234 INFO ✅ Successfully fetched 9687 records for EMF
+2025-08-09 18:12:54,554 INFO Saved 5774 records for ENX
+2025-08-09 18:12:54,555 INFO ✅ Successfully fetched 5774 records for ENX
+2025-08-09 18:12:54,846 INFO Saved 5229 records for EOI
+2025-08-09 18:12:54,847 INFO ✅ Successfully fetched 5229 records for EOI
+2025-08-09 18:12:55,213 INFO Saved 5567 records for ERC
+2025-08-09 18:12:55,214 INFO ✅ Successfully fetched 5567 records for ERC
+2025-08-09 18:12:55,511 INFO Saved 5355 records for ERH
+2025-08-09 18:12:55,512 INFO ✅ Successfully fetched 5355 records for ERH
+2025-08-09 18:12:55,812 INFO Saved 5418 records for ETG
+2025-08-09 18:12:55,812 INFO ✅ Successfully fetched 5418 records for ETG
+2025-08-09 18:12:56,066 INFO Saved 4538 records for ETJ
+2025-08-09 18:12:56,066 INFO ✅ Successfully fetched 4538 records for ETJ
+2025-08-09 18:12:56,366 INFO Saved 5355 records for ETO
+2025-08-09 18:12:56,367 INFO ✅ Successfully fetched 5355 records for ETO
+2025-08-09 18:12:56,652 INFO Saved 5061 records for ETV
+2025-08-09 18:12:56,652 INFO ✅ Successfully fetched 5061 records for ETV
+2025-08-09 18:12:56,914 INFO Saved 4703 records for ETY
+2025-08-09 18:12:56,914 INFO ✅ Successfully fetched 4703 records for ETY
+2025-08-09 18:12:57,202 INFO Saved 5147 records for EVG
+2025-08-09 18:12:57,203 INFO ✅ Successfully fetched 5147 records for EVG
+2025-08-09 18:12:57,747 INFO Saved 9905 records for FAX
+2025-08-09 18:12:57,748 INFO ✅ Successfully fetched 9905 records for FAX
+2025-08-09 18:12:58,028 INFO Saved 4990 records for FBIZ
+2025-08-09 18:12:58,028 INFO ✅ Successfully fetched 4990 records for FBIZ
+2025-08-09 18:12:58,322 INFO Saved 5271 records for FFA
+2025-08-09 18:12:58,323 INFO ✅ Successfully fetched 5271 records for FFA
+2025-08-09 18:12:58,643 INFO Saved 5669 records for FFC
+2025-08-09 18:12:58,643 INFO ✅ Successfully fetched 5669 records for FFC
+2025-08-09 18:12:58,688 INFO Saved 679 records for FG
+2025-08-09 18:12:58,688 INFO ✅ Successfully fetched 679 records for FG
+2025-08-09 18:12:58,942 INFO Saved 4553 records for FGB
+2025-08-09 18:12:58,943 INFO ✅ Successfully fetched 4553 records for FGB
+2025-08-09 18:12:58,976 INFO Saved 415 records for FGN
+2025-08-09 18:12:58,976 INFO ✅ Successfully fetched 415 records for FGN
+2025-08-09 18:12:59,090 INFO Saved 1946 records for FINV
+2025-08-09 18:12:59,090 INFO ✅ Successfully fetched 1946 records for FINV
+2025-08-09 18:12:59,398 INFO Saved 5523 records for FLC
+2025-08-09 18:12:59,399 INFO ✅ Successfully fetched 5523 records for FLC
+2025-08-09 18:12:59,574 INFO Saved 3071 records for FPF
+2025-08-09 18:12:59,575 INFO ✅ Successfully fetched 3071 records for FPF
+2025-08-09 18:12:59,711 INFO Saved 2074 records for FPH
+2025-08-09 18:12:59,711 INFO ✅ Successfully fetched 2074 records for FPH
+2025-08-09 18:12:59,874 INFO Saved 2849 records for FPI
+2025-08-09 18:12:59,875 INFO ✅ Successfully fetched 2849 records for FPI
+2025-08-09 18:13:00,186 INFO Saved 5479 records for FRA
+2025-08-09 18:13:00,186 INFO ✅ Successfully fetched 5479 records for FRA
+2025-08-09 18:13:00,233 INFO Saved 685 records for FSCO
+2025-08-09 18:13:00,233 INFO ✅ Successfully fetched 685 records for FSCO
+2025-08-09 18:13:00,800 INFO Saved 9288 records for FT
+2025-08-09 18:13:00,801 INFO ✅ Successfully fetched 9288 records for FT
+2025-08-09 18:13:01,297 INFO Saved 8290 records for FUNC
+2025-08-09 18:13:01,298 INFO ✅ Successfully fetched 8290 records for FUNC
+2025-08-09 18:13:01,380 INFO Saved 1299 records for GAINL
+2025-08-09 18:13:01,380 INFO ✅ Successfully fetched 1299 records for GAINL
+2025-08-09 18:13:01,492 INFO Saved 1851 records for GAINN
+2025-08-09 18:13:01,492 INFO ✅ Successfully fetched 1851 records for GAINN
+2025-08-09 18:13:01,557 INFO Saved 997 records for GAINZ
+2025-08-09 18:13:01,557 INFO ✅ Successfully fetched 997 records for GAINZ
+2025-08-09 18:13:02,348 INFO Saved 14465 records for GAM
+2025-08-09 18:13:02,349 INFO ✅ Successfully fetched 14465 records for GAM
+2025-08-09 18:13:02,780 INFO Saved 7640 records for GCV
+2025-08-09 18:13:02,781 INFO ✅ Successfully fetched 7640 records for GCV
+2025-08-09 18:13:03,549 INFO Saved 13559 records for GHC
+2025-08-09 18:13:03,551 INFO ✅ Successfully fetched 13559 records for GHC
+2025-08-09 18:13:03,732 INFO Saved 3176 records for GHY
+2025-08-09 18:13:03,732 INFO ✅ Successfully fetched 3176 records for GHY
+2025-08-09 18:13:04,125 INFO Saved 7132 records for GIFI
+2025-08-09 18:13:04,126 INFO ✅ Successfully fetched 7132 records for GIFI
+2025-08-09 18:13:04,459 INFO Saved 6024 records for GLAD
+2025-08-09 18:13:04,460 INFO ✅ Successfully fetched 6024 records for GLAD
+2025-08-09 18:13:04,746 INFO Saved 5104 records for GLQ
+2025-08-09 18:13:04,746 INFO ✅ Successfully fetched 5104 records for GLQ
+2025-08-09 18:13:05,110 INFO Saved 4538 records for GOF
+2025-08-09 18:13:05,111 INFO ✅ Successfully fetched 4538 records for GOF
+2025-08-09 18:13:05,517 INFO Saved 7318 records for GRF
+2025-08-09 18:13:05,518 INFO ✅ Successfully fetched 7318 records for GRF
+2025-08-09 18:13:05,545 INFO Saved 339 records for HAFN
+2025-08-09 18:13:05,545 INFO ✅ Successfully fetched 339 records for HAFN
+2025-08-09 18:13:05,580 INFO Saved 435 records for HG
+2025-08-09 18:13:05,580 INFO ✅ Successfully fetched 435 records for HG
+2025-08-09 18:13:05,676 INFO Saved 1628 records for HGLB
+2025-08-09 18:13:05,676 INFO ✅ Successfully fetched 1628 records for HGLB
+2025-08-09 18:13:05,694 INFO Saved 156 records for HIT
+2025-08-09 18:13:05,694 INFO ✅ Successfully fetched 156 records for HIT
+2025-08-09 18:13:06,068 INFO Saved 4581 records for HNW
+2025-08-09 18:13:06,068 INFO ✅ Successfully fetched 4581 records for HNW
+2025-08-09 18:13:06,600 INFO Saved 9648 records for HQH
+2025-08-09 18:13:06,600 INFO ✅ Successfully fetched 9648 records for HQH
+2025-08-09 18:13:07,063 INFO Saved 8377 records for HQL
+2025-08-09 18:13:07,063 INFO ✅ Successfully fetched 8377 records for HQL
+2025-08-09 18:13:07,277 INFO Saved 3718 records for HYI
+2025-08-09 18:13:07,277 INFO ✅ Successfully fetched 3718 records for HYI
+2025-08-09 18:13:07,537 INFO Saved 4622 records for IAE
+2025-08-09 18:13:07,538 INFO ✅ Successfully fetched 4622 records for IAE
+2025-08-09 18:13:08,005 INFO Saved 7923 records for IFN
+2025-08-09 18:13:08,007 INFO ✅ Successfully fetched 7923 records for IFN
+2025-08-09 18:13:08,358 INFO Saved 5125 records for IGD
+2025-08-09 18:13:08,359 INFO ✅ Successfully fetched 5125 records for IGD
+2025-08-09 18:13:12,088 INFO Saved 3593 records for IHD
+2025-08-09 18:13:12,089 INFO ✅ Successfully fetched 3593 records for IHD
+2025-08-09 18:13:14,922 INFO Saved 922 records for IMPP
+2025-08-09 18:13:14,924 INFO ✅ Successfully fetched 922 records for IMPP
+2025-08-09 18:13:17,584 INFO Saved 922 records for IMPPP
+2025-08-09 18:13:17,585 INFO ✅ Successfully fetched 922 records for IMPPP
+2025-08-09 18:13:20,361 INFO Saved 2193 records for INSW
+2025-08-09 18:13:20,361 INFO ✅ Successfully fetched 2193 records for INSW
+2025-08-09 18:13:23,099 INFO Saved 247 records for INVX
+2025-08-09 18:13:23,099 INFO ✅ Successfully fetched 247 records for INVX
+2025-08-09 18:13:25,986 INFO Saved 2821 records for JD
+2025-08-09 18:13:25,987 INFO ✅ Successfully fetched 2821 records for JD
+2025-08-09 18:13:29,011 INFO Saved 8304 records for JEQ
+2025-08-09 18:13:29,012 INFO ✅ Successfully fetched 8304 records for JEQ
+2025-08-09 18:13:32,084 INFO Saved 2692 records for JGH
+2025-08-09 18:13:32,085 INFO ✅ Successfully fetched 2692 records for JGH
+2025-08-09 18:13:35,798 INFO Saved 13647 records for JHI
+2025-08-09 18:13:35,800 INFO ✅ Successfully fetched 13647 records for JHI
+2025-08-09 18:13:39,469 INFO Saved 13224 records for JHS
+2025-08-09 18:13:39,470 INFO ✅ Successfully fetched 13224 records for JHS
+2025-08-09 18:13:42,754 INFO Saved 8917 records for JOF
+2025-08-09 18:13:42,754 INFO ✅ Successfully fetched 8917 records for JOF
+2025-08-09 18:13:45,742 INFO Saved 2579 records for JXG
+2025-08-09 18:13:45,743 INFO ✅ Successfully fetched 2579 records for JXG
+2025-08-09 18:13:49,220 INFO Saved 9831 records for KBH
+2025-08-09 18:13:49,221 INFO ✅ Successfully fetched 9831 records for KBH
+2025-08-09 18:13:52,354 INFO Saved 3028 records for KIO
+2025-08-09 18:13:52,355 INFO ✅ Successfully fetched 3028 records for KIO
+2025-08-09 18:13:55,105 INFO Saved 1081 records for KKRS
+2025-08-09 18:13:55,105 INFO ✅ Successfully fetched 1081 records for KKRS
+2025-08-09 18:13:57,990 INFO Saved 855 records for KMPB
+2025-08-09 18:13:57,990 INFO ✅ Successfully fetched 855 records for KMPB
+2025-08-09 18:14:01,037 INFO Saved 5250 records for KYN
+2025-08-09 18:14:01,040 INFO ✅ Successfully fetched 5250 records for KYN
+2025-08-09 18:14:04,175 INFO Saved 3277 records for LDP
+2025-08-09 18:14:04,175 INFO ✅ Successfully fetched 3277 records for LDP
+2025-08-09 18:14:08,042 INFO Saved 13629 records for LEN
+2025-08-09 18:14:08,045 INFO ✅ Successfully fetched 13629 records for LEN
+2025-08-09 18:14:11,815 INFO Saved 9542 records for LEO
+2025-08-09 18:14:11,816 INFO ✅ Successfully fetched 9542 records for LEO
+2025-08-09 18:14:14,772 INFO Saved 1305 records for LNKB
+2025-08-09 18:14:14,773 INFO ✅ Successfully fetched 1305 records for LNKB
+2025-08-09 18:14:18,860 INFO Saved 13272 records for MATX
+2025-08-09 18:14:18,862 INFO ✅ Successfully fetched 13272 records for MATX
+2025-08-09 18:14:22,175 INFO Saved 6966 records for MBWM
+2025-08-09 18:14:22,176 INFO ✅ Successfully fetched 6966 records for MBWM
+2025-08-09 18:14:26,207 INFO Saved 9755 records for MFM
+2025-08-09 18:14:26,209 INFO ✅ Successfully fetched 9755 records for MFM
+2025-08-09 18:14:29,648 INFO Saved 7995 records for MHO
+2025-08-09 18:14:29,649 INFO ✅ Successfully fetched 7995 records for MHO
+2025-08-09 18:14:33,610 INFO Saved 7808 records for MLR
+2025-08-09 18:14:33,611 INFO ✅ Successfully fetched 7808 records for MLR
+2025-08-09 18:14:37,245 INFO Saved 9682 records for MMT
+2025-08-09 18:14:37,245 INFO ✅ Successfully fetched 9682 records for MMT
+2025-08-09 18:14:40,947 INFO Saved 6288 records for MNDO
+2025-08-09 18:14:40,948 INFO ✅ Successfully fetched 6288 records for MNDO
+2025-08-09 18:14:44,030 INFO Saved 448 records for MNR
+2025-08-09 18:14:44,031 INFO ✅ Successfully fetched 448 records for MNR
+2025-08-09 18:14:47,267 INFO Saved 1209 records for MNSO
+2025-08-09 18:14:47,268 INFO ✅ Successfully fetched 1209 records for MNSO
+2025-08-09 18:14:50,421 INFO Saved 2680 records for MOMO
+2025-08-09 18:14:50,421 INFO ✅ Successfully fetched 2680 records for MOMO
+2025-08-09 18:14:53,842 INFO Saved 3399 records for MTDR
+2025-08-09 18:14:53,843 INFO ✅ Successfully fetched 3399 records for MTDR
+2025-08-09 18:14:57,676 INFO Saved 9333 records for MTH
+2025-08-09 18:14:57,677 INFO ✅ Successfully fetched 9333 records for MTH
+2025-08-09 18:15:01,392 INFO Saved 6592 records for NAD
+2025-08-09 18:15:01,393 INFO ✅ Successfully fetched 6592 records for NAD
+2025-08-09 18:15:04,571 INFO Saved 167 records for NAMI
+2025-08-09 18:15:04,571 INFO ✅ Successfully fetched 167 records for NAMI
+2025-08-09 18:15:08,303 INFO Saved 5755 records for NBH
+2025-08-09 18:15:08,304 INFO ✅ Successfully fetched 5755 records for NBH
+2025-08-09 18:15:11,486 INFO Saved 1056 records for NBXG
+2025-08-09 18:15:11,486 INFO ✅ Successfully fetched 1056 records for NBXG
+2025-08-09 18:15:15,384 INFO Saved 5629 records for NCV
+2025-08-09 18:15:15,385 INFO ✅ Successfully fetched 5629 records for NCV
+2025-08-09 18:15:19,105 INFO Saved 5544 records for NCZ
+2025-08-09 18:15:19,106 INFO ✅ Successfully fetched 5544 records for NCZ
+2025-08-09 18:15:22,572 INFO Saved 1243 records for NDMO
+2025-08-09 18:15:22,573 INFO ✅ Successfully fetched 1243 records for NDMO
+2025-08-09 18:15:26,346 INFO Saved 5713 records for NEA
+2025-08-09 18:15:26,346 INFO ✅ Successfully fetched 5713 records for NEA
+2025-08-09 18:15:30,138 INFO Saved 4804 records for NECB
+2025-08-09 18:15:30,139 INFO ✅ Successfully fetched 4804 records for NECB
+2025-08-09 18:15:33,702 INFO Saved 5544 records for NHS
+2025-08-09 18:15:33,703 INFO ✅ Successfully fetched 5544 records for NHS
+2025-08-09 18:15:37,758 INFO Saved 9387 records for NMI
+2025-08-09 18:15:37,759 INFO ✅ Successfully fetched 9387 records for NMI
+2025-08-09 18:15:41,416 INFO Saved 2954 records for NMIH
+2025-08-09 18:15:41,417 INFO ✅ Successfully fetched 2954 records for NMIH
+2025-08-09 18:15:45,146 INFO Saved 3113 records for NML
+2025-08-09 18:15:45,146 INFO ✅ Successfully fetched 3113 records for NML
+2025-08-09 18:15:48,887 INFO Saved 5479 records for NRO
+2025-08-09 18:15:48,887 INFO ✅ Successfully fetched 5479 records for NRO
+2025-08-09 18:15:53,249 INFO Saved 12492 records for NRT
+2025-08-09 18:15:53,251 INFO ✅ Successfully fetched 12492 records for NRT
+2025-08-09 18:15:56,636 INFO Saved 220 records for NVAWW
+2025-08-09 18:15:56,636 INFO ✅ Successfully fetched 220 records for NVAWW
+2025-08-09 18:16:00,170 INFO Saved 465 records for NVNI
+2025-08-09 18:16:00,171 INFO ✅ Successfully fetched 465 records for NVNI
+2025-08-09 18:16:03,930 INFO Saved 4485 records for NWG
+2025-08-09 18:16:03,930 INFO ✅ Successfully fetched 4485 records for NWG
+2025-08-09 18:16:08,205 INFO Saved 6006 records for NZF
+2025-08-09 18:16:08,214 INFO ✅ Successfully fetched 6006 records for NZF
+2025-08-09 18:16:12,451 INFO Saved 9667 records for OFG
+2025-08-09 18:16:12,452 INFO ✅ Successfully fetched 9667 records for OFG
+2025-08-09 18:16:16,831 INFO Saved 3206 records for OFS
+2025-08-09 18:16:16,832 INFO ✅ Successfully fetched 3206 records for OFS
+2025-08-09 18:16:20,515 INFO Saved 946 records for OFSSH
+2025-08-09 18:16:20,515 INFO ✅ Successfully fetched 946 records for OFSSH
+2025-08-09 18:16:24,838 INFO Saved 5565 records for OPHC
+2025-08-09 18:16:24,839 INFO ✅ Successfully fetched 5565 records for OPHC
+2025-08-09 18:16:29,076 INFO Saved 6015 records for OVLY
+2025-08-09 18:16:29,077 INFO ✅ Successfully fetched 6015 records for OVLY
+2025-08-09 18:16:33,933 INFO Saved 14346 records for OXM
+2025-08-09 18:16:33,934 INFO ✅ Successfully fetched 14346 records for OXM
+2025-08-09 18:16:37,931 INFO Saved 7060 records for OZK
+2025-08-09 18:16:37,932 INFO ✅ Successfully fetched 7060 records for OZK
+2025-08-09 18:16:41,903 INFO Saved 947 records for OZKAP
+2025-08-09 18:16:41,903 INFO ✅ Successfully fetched 947 records for OZKAP
+2025-08-09 18:16:45,513 INFO Saved 886 records for PAXS
+2025-08-09 18:16:45,513 INFO ✅ Successfully fetched 886 records for PAXS
+2025-08-09 18:16:49,337 INFO Saved 161 records for PDPA
+2025-08-09 18:16:49,337 INFO ✅ Successfully fetched 161 records for PDPA
+2025-08-09 18:16:52,949 INFO Saved 1641 records for PDX
+2025-08-09 18:16:52,950 INFO ✅ Successfully fetched 1641 records for PDX
+2025-08-09 18:16:57,269 INFO Saved 8697 records for PFD
+2025-08-09 18:16:57,270 INFO ✅ Successfully fetched 8697 records for PFD
+2025-08-09 18:17:01,252 INFO Saved 5523 records for PFL
+2025-08-09 18:17:01,253 INFO ✅ Successfully fetched 5523 records for PFL
+2025-08-09 18:17:05,417 INFO Saved 5229 records for PFN
+2025-08-09 18:17:05,417 INFO ✅ Successfully fetched 5229 records for PFN
+2025-08-09 18:17:09,767 INFO Saved 8436 records for PFO
+2025-08-09 18:17:09,768 INFO ✅ Successfully fetched 8436 records for PFO
+2025-08-09 18:17:13,993 INFO Saved 5083 records for PGP
+2025-08-09 18:17:13,994 INFO ✅ Successfully fetched 5083 records for PGP
+2025-08-09 18:17:18,254 INFO Saved 3049 records for PGZ
+2025-08-09 18:17:18,255 INFO ✅ Successfully fetched 3049 records for PGZ
+2025-08-09 18:17:22,521 INFO Saved 5189 records for PHD
+2025-08-09 18:17:22,521 INFO ✅ Successfully fetched 5189 records for PHD
+2025-08-09 18:17:26,989 INFO Saved 6558 records for PLBC
+2025-08-09 18:17:26,990 INFO ✅ Successfully fetched 6558 records for PLBC
+2025-08-09 18:17:32,079 INFO Saved 9186 records for PMM
+2025-08-09 18:17:32,080 INFO ✅ Successfully fetched 9186 records for PMM
+2025-08-09 18:17:36,083 INFO Saved 2342 records for PR
+2025-08-09 18:17:36,084 INFO ✅ Successfully fetched 2342 records for PR
+2025-08-09 18:17:40,349 INFO Saved 3698 records for PSF
+2025-08-09 18:17:40,349 INFO ✅ Successfully fetched 3698 records for PSF
+2025-08-09 18:17:44,254 INFO Saved 1200 records for PTA
+2025-08-09 18:17:44,254 INFO ✅ Successfully fetched 1200 records for PTA
+2025-08-09 18:17:48,524 INFO Saved 4664 records for QQQX
+2025-08-09 18:17:48,525 INFO ✅ Successfully fetched 4664 records for QQQX
+2025-08-09 18:17:53,105 INFO Saved 11962 records for RAND
+2025-08-09 18:17:53,107 INFO ✅ Successfully fetched 11962 records for RAND
+2025-08-09 18:17:57,814 INFO Saved 7367 records for RCG
+2025-08-09 18:17:57,815 INFO ✅ Successfully fetched 7367 records for RCG
+2025-08-09 18:18:01,921 INFO Saved 920 records for REFI
+2025-08-09 18:18:01,921 INFO ✅ Successfully fetched 920 records for REFI
+2025-08-09 18:18:06,651 INFO Saved 7459 records for REPX
+2025-08-09 18:18:06,652 INFO ✅ Successfully fetched 7459 records for REPX
+2025-08-09 18:18:11,516 INFO Saved 7559 records for RNR
+2025-08-09 18:18:11,517 INFO ✅ Successfully fetched 7559 records for RNR
+2025-08-09 18:18:16,815 INFO Saved 953 records for RWAY
+2025-08-09 18:18:16,815 INFO ✅ Successfully fetched 953 records for RWAY
+2025-08-09 18:18:20,935 INFO Saved 759 records for RWAYL
+2025-08-09 18:18:20,935 INFO ✅ Successfully fetched 759 records for RWAYL
+2025-08-09 18:18:25,268 INFO Saved 668 records for RWAYZ
+2025-08-09 18:18:25,269 INFO ✅ Successfully fetched 668 records for RWAYZ
+2025-08-09 18:18:29,972 INFO Saved 9420 records for SABA
+2025-08-09 18:18:29,973 INFO ✅ Successfully fetched 9420 records for SABA
+2025-08-09 18:18:35,200 INFO Saved 205 records for SBCWW
+2025-08-09 18:18:35,201 INFO ✅ Successfully fetched 205 records for SBCWW
+2025-08-09 18:18:39,692 INFO Saved 4894 records for SBLK
+2025-08-09 18:18:39,693 INFO ✅ Successfully fetched 4894 records for SBLK
+2025-08-09 18:18:44,694 INFO Saved 5399 records for SCD
+2025-08-09 18:18:44,695 INFO ✅ Successfully fetched 5399 records for SCD
+2025-08-09 18:18:49,521 INFO Saved 2223 records for SD
+2025-08-09 18:18:49,521 INFO ✅ Successfully fetched 2223 records for SD
+2025-08-09 18:18:54,316 INFO Saved 7408 records for SGRP
+2025-08-09 18:18:54,317 INFO ✅ Successfully fetched 7408 records for SGRP
+2025-08-09 18:18:58,978 INFO Saved 7460 records for SGU
+2025-08-09 18:18:58,978 INFO ✅ Successfully fetched 7460 records for SGU
+2025-08-09 18:19:04,019 INFO Saved 8012 records for SIM
+2025-08-09 18:19:04,021 INFO ✅ Successfully fetched 8012 records for SIM
+2025-08-09 18:19:09,010 INFO Saved 11296 records for SNV
+2025-08-09 18:19:09,011 INFO ✅ Successfully fetched 11296 records for SNV
+2025-08-09 18:19:14,338 INFO Saved 13297 records for SON
+2025-08-09 18:19:14,339 INFO ✅ Successfully fetched 13297 records for SON
+2025-08-09 18:19:19,649 INFO Saved 8105 records for SPE
+2025-08-09 18:19:19,650 INFO ✅ Successfully fetched 8105 records for SPE
+2025-08-09 18:19:24,620 INFO Saved 4957 records for SPXX
+2025-08-09 18:19:24,621 INFO ✅ Successfully fetched 4957 records for SPXX
+2025-08-09 18:19:29,364 INFO Saved 976 records for SSBK
+2025-08-09 18:19:29,365 INFO ✅ Successfully fetched 976 records for SSBK
+2025-08-09 18:19:35,244 INFO Saved 13255 records for STEW
+2025-08-09 18:19:35,246 INFO ✅ Successfully fetched 13255 records for STEW
+2025-08-09 18:19:40,003 INFO Saved 3534 records for SXC
+2025-08-09 18:19:40,003 INFO ✅ Successfully fetched 3534 records for SXC
+2025-08-09 18:19:44,724 INFO Saved 1013 records for TBLD
+2025-08-09 18:19:44,724 INFO ✅ Successfully fetched 1013 records for TBLD
+2025-08-09 18:19:49,111 INFO Saved 940 records for TCBX
+2025-08-09 18:19:49,111 INFO ✅ Successfully fetched 940 records for TCBX
+2025-08-09 18:19:54,643 INFO Saved 2775 records for THQ
+2025-08-09 18:19:54,643 INFO ✅ Successfully fetched 2775 records for THQ
+2025-08-09 18:20:00,230 INFO Saved 7564 records for TK
+2025-08-09 18:20:00,232 INFO ✅ Successfully fetched 7564 records for TK
+2025-08-09 18:20:07,082 INFO Saved 3103 records for TMHC
+2025-08-09 18:20:07,083 INFO ✅ Successfully fetched 3103 records for TMHC
+2025-08-09 18:20:12,275 INFO Saved 9736 records for TWN
+2025-08-09 18:20:12,276 INFO ✅ Successfully fetched 9736 records for TWN
+2025-08-09 18:20:18,406 INFO Saved 14496 records for TY
+2025-08-09 18:20:18,408 INFO ✅ Successfully fetched 14496 records for TY
+2025-08-09 18:20:24,292 INFO Saved 11112 records for UHS
+2025-08-09 18:20:24,294 INFO ✅ Successfully fetched 11112 records for UHS
+2025-08-09 18:20:30,405 INFO Saved 9763 records for UNM
+2025-08-09 18:20:30,406 INFO ✅ Successfully fetched 9763 records for UNM
+2025-08-09 18:20:36,712 INFO Saved 9772 records for USA
+2025-08-09 18:20:36,714 INFO ✅ Successfully fetched 9772 records for USA
+2025-08-09 18:20:44,317 INFO Saved 5399 records for UTG
+2025-08-09 18:20:44,321 INFO ✅ Successfully fetched 5399 records for UTG
+2025-08-09 18:20:51,153 INFO Saved 5885 records for VALE
+2025-08-09 18:20:51,154 INFO ✅ Successfully fetched 5885 records for VALE
+2025-08-09 18:20:56,391 INFO Saved 1397 records for VEL
+2025-08-09 18:20:56,392 INFO ✅ Successfully fetched 1397 records for VEL
+2025-08-09 18:21:01,931 INFO Saved 8174 records for VFL
+2025-08-09 18:21:01,932 INFO ✅ Successfully fetched 8174 records for VFL
+2025-08-09 18:21:07,693 INFO Saved 3384 records for VGI
+2025-08-09 18:21:07,695 INFO ✅ Successfully fetched 3384 records for VGI
+2025-08-09 18:21:12,865 INFO Saved 3364 records for VIPS
+2025-08-09 18:21:12,865 INFO ✅ Successfully fetched 3364 records for VIPS
+2025-08-09 18:21:19,435 INFO Saved 12599 records for VIRC
+2025-08-09 18:21:19,437 INFO ✅ Successfully fetched 12599 records for VIRC
+2025-08-09 18:21:25,042 INFO Saved 8009 records for VKI
+2025-08-09 18:21:25,043 INFO ✅ Successfully fetched 8009 records for VKI
+2025-08-09 18:21:32,116 INFO Saved 2774 records for WLKP
+2025-08-09 18:21:32,117 INFO ✅ Successfully fetched 2774 records for WLKP
+2025-08-09 18:21:37,122 INFO Saved 1731 records for XYF
+2025-08-09 18:21:37,122 INFO ✅ Successfully fetched 1731 records for XYF
+2025-08-09 18:21:37,773 INFO [VectorBT] Downloaded price data: 374 rows, 253 tickers
+2025-08-09 18:21:37,775 INFO [VectorBT] Rebalance dates: 18
+2025-08-09 18:21:37,816 INFO Fetching batch 1 / 6
+2025-08-09 18:30:22,613 INFO Fetching batch 2 / 6
+2025-08-09 18:39:05,438 INFO Fetching batch 3 / 6
+2025-08-09 18:47:40,113 INFO Fetching batch 4 / 6
+2025-08-09 18:56:04,287 INFO Fetching batch 5 / 6
+2025-08-09 19:04:38,198 INFO Fetching batch 6 / 6
+2025-08-09 19:05:28,208 INFO [VectorBT] Factor progress: 1/18 rebalance dates (6%)
+2025-08-09 19:05:28,229 INFO [VectorBT] Factor progress: 2/18 rebalance dates (11%)
+2025-08-09 19:05:28,243 INFO [VectorBT] Factor progress: 3/18 rebalance dates (17%)
+2025-08-09 19:05:28,258 INFO [VectorBT] Factor progress: 4/18 rebalance dates (22%)
+2025-08-09 19:05:28,272 INFO [VectorBT] Factor progress: 5/18 rebalance dates (28%)
+2025-08-09 19:05:28,286 INFO [VectorBT] Factor progress: 6/18 rebalance dates (33%)
+2025-08-09 19:05:28,300 INFO [VectorBT] Factor progress: 7/18 rebalance dates (39%)
+2025-08-09 19:05:28,314 INFO [VectorBT] Factor progress: 8/18 rebalance dates (44%)
+2025-08-09 19:05:28,329 INFO [VectorBT] Factor progress: 9/18 rebalance dates (50%)
+2025-08-09 19:05:28,343 INFO [VectorBT] Factor progress: 10/18 rebalance dates (56%)
+2025-08-09 19:05:28,358 INFO [VectorBT] Factor progress: 11/18 rebalance dates (61%)
+2025-08-09 19:05:28,372 INFO [VectorBT] Factor progress: 12/18 rebalance dates (67%)
+2025-08-09 19:05:28,386 INFO [VectorBT] Factor progress: 13/18 rebalance dates (72%)
+2025-08-09 19:05:28,400 INFO [VectorBT] Factor progress: 14/18 rebalance dates (78%)
+2025-08-09 19:05:28,415 INFO [VectorBT] Factor progress: 15/18 rebalance dates (83%)
+2025-08-09 19:05:28,429 INFO [VectorBT] Factor progress: 16/18 rebalance dates (89%)
+2025-08-09 19:05:28,443 INFO [VectorBT] Factor progress: 17/18 rebalance dates (94%)
+2025-08-09 19:05:28,457 INFO [VectorBT] Factor progress: 18/18 rebalance dates (100%)
+2025-08-09 19:05:28,492 INFO [VectorBT] Factor scores computed
+2025-08-09 19:05:33,544 INFO [VectorBT] Portfolio run complete
+2025-08-09 19:05:41,500 INFO Saved 8188 records for SPY
+2025-08-09 19:05:41,501 INFO ✅ Successfully fetched 8188 records for SPY
+
+============================================================
+BACKTEST RESULTS: Multi-Factor Value (VectorBT)
+============================================================
+Period: 2024-01-01 to 2025-06-30
+Initial Capital: $100,000.00
+Final Capital: $25,315,963.62
+Total Return: 0.06%
+Annualized Return: 0.04%
+Max Drawdown: 23.81%
+Sharpe Ratio: inf
+Volatility: 4.29%
+Number of Trades: 0.20553359683794467
+Win Rate: nan%
+Avg Holding Period: 0.0 days
+Transaction Costs: $20.53
+Benchmark Return: 30.72%
+Alpha: -30.66%
+============================================================

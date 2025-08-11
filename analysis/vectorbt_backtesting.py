@@ -124,8 +124,9 @@ class CustomValueInvestingBacktester:
             raise RuntimeError("No price data available")
         
         P = pd.DataFrame(price_data).ffill().bfill()
-        P = P.loc[start:end]
-        return P
+        start_dt = pd.to_datetime(start); end_dt = pd.to_datetime(end)
+        start_buf = start_dt - pd.tseries.offsets.BDay(270)  # ~1y business days
+        return P.loc[start_buf:end_dt]
 
     def _apply_costs(self, value: float) -> float:
         """Apply transaction costs and slippage"""
@@ -225,11 +226,10 @@ class CustomValueInvestingBacktester:
                 
                 # Calculate momentum
                 past = self.prices_df.shift(252).loc[date]
-                mom = (prices / past - 1).dropna()
-                mom_r = mom.rank(pct=True)
-                
-                # Combine factors
-                score = (val_r + qual_r + mom_r) / 3
+                mom = (prices / past - 1).dropna()                # Series indexed by ticker
+                mom = mom.reindex(fdf.index).dropna()             # align to factor DF tickers
+                mom_r = mom.rank(pct=True, ascending=False)       # higher momentum better
+                score = (val_r.loc[mom_r.index] + qual_r.loc[mom_r.index] + mom_r) / 3
                 universe = score.nlargest(self.max_positions).index.tolist()
             else:
                 universe = []
@@ -393,6 +393,38 @@ class VectorBTBacktester:
         
         self.historical_service = HistoricalDataService()
 
+    def _avg_holding_days_from_pf(self, pf: vbt.portfolio.base.Portfolio, index: pd.DatetimeIndex) -> float:
+        # 1) try the “readable” table first (when available)
+        try:
+            tr = pf.trades.records_readable
+            if tr is not None:
+                df = pd.DataFrame(tr)
+                # try a few likely column name pairs
+                for a, b in [
+                    ("Entry Time", "Exit Time"),
+                    ("Entry Date", "Exit Date"),
+                    ("Entry Timestamp", "Exit Timestamp"),
+                ]:
+                    if a in df.columns and b in df.columns:
+                        dur = pd.to_datetime(df[b]) - pd.to_datetime(df[a])
+                        if len(dur) > 0:
+                            return float(dur.dt.total_seconds().mean() / 86400.0)
+        except Exception:
+            pass
+
+        # 2) fallback: use raw records and map idx -> timestamps
+        rec = pf.trades.records
+        if rec is None or rec.size == 0:
+            return 0.0
+        entry_idx = pd.Series(rec["entry_idx"], dtype="int64")
+        exit_idx  = pd.Series(rec["exit_idx"], dtype="int64")
+        entry_ts = pd.to_datetime(index[entry_idx])
+        exit_ts  = pd.to_datetime(index[exit_idx])
+        dur_days = (exit_ts - entry_ts).total_seconds() / 86400.0
+        return float(np.mean(dur_days)) if len(dur_days) else 0.0
+
+
+
     def download_price_matrix(self, tickers: List[str], start: str, end: str) -> pd.DataFrame:
         """Download price data for all tickers"""
         price_data = {}
@@ -442,106 +474,141 @@ class VectorBTBacktester:
                 logging.info(f"[VectorBT] Factor progress: {idx}/{total} rebalance dates ({idx/total:.0%})")
         
         # rank factors
-        pe_r = pe.rank(axis=1, pct=True, ascending=True)
+        pe_r = pe.rank(axis=1, pct=True, ascending=True) 
         roe_r = roe.rank(axis=1, pct=True, ascending=False)
-        mom_r = mom.rank(axis=1, pct=True, ascending=True)
+        mom_r = mom.rank(axis=1, pct=True, ascending=False) 
         
-        return (pe_r + roe_r + mom_r) / 3
+        # NaN-safe combination: mean of available factors per cell
+        count = (~pe_r.isna()).astype(int) + (~roe_r.isna()).astype(int) + (~mom_r.isna()).astype(int)
+        score = (pe_r.fillna(0) + roe_r.fillna(0) + mom_r.fillna(0)) / count.replace(0, np.nan)
+        return score
 
-    def run_backtest(
-        self, tickers: List[str], start_date: str, end_date: str,
-        rebalance_freq: str = "ME"
-    ) -> BacktestResult:
-        """Run VectorBT backtest"""
-        # Download price data
+    def run_backtest(self, tickers, start_date, end_date, rebalance_freq="ME") -> BacktestResult:
+        # 1) Prices
         P = self.download_price_matrix(tickers, start_date, end_date)
         logging.info(f"[VectorBT] Downloaded price data: {len(P)} rows, {P.shape[1]} tickers")
-        
-        # Get rebalance dates
+
+        # 2) Rebalance dates aligned to trading days
         if rebalance_freq == "ME":
-            # Use pandas date_range for monthly rebalancing
-            rebalance_dates = pd.date_range(start_date, end_date, freq='ME')
-            # Align to trading days
-            rebalance_dates = trading_days_aligner(P.index)(rebalance_dates)
+            rb = pd.date_range(start_date, end_date, freq="ME")
         else:
-            rebalance_dates = pd.date_range(start_date, end_date, freq=rebalance_freq)
-            rebalance_dates = trading_days_aligner(P.index)(rebalance_dates)
+            rb = pd.date_range(start_date, end_date, freq=rebalance_freq)
+        rebalance_dates = trading_days_aligner(P.index)(rb)
         logging.info(f"[VectorBT] Rebalance dates: {len(rebalance_dates)}")
 
-        # Compute factor scores
-        score = self.compute_factors(P, rebalance_dates, tickers)
+        # 3) Factor scores (fix momentum ranking)
+        score = self.compute_factors(P, rebalance_dates, list(P.columns))  # mom rank ascending=False inside
         logging.info("[VectorBT] Factor scores computed")
 
-        # Generate entry signals
-        entries = pd.DataFrame(False, index=P.index, columns=P.columns)
-        for date in rebalance_dates:
-            if date in score.index:
-                top_stocks = score.loc[date].nlargest(self.max_positions).index
-                entries.loc[date, top_stocks] = True
+        # 4) Target weights: set only on rebalance rows, no ffill
+        W = pd.DataFrame(np.nan, index=P.index, columns=P.columns, dtype=float)
 
-        # Run VectorBT portfolio
-        pf = vbt.Portfolio.from_signals(
+        for d in rebalance_dates:
+            if d not in P.index:
+                continue
+
+            # aligned factor row (defensive)
+            row = score.loc[d].reindex(P.columns) if (d in score.index) else pd.Series(index=P.columns, dtype=float)
+
+            if row.isna().all():
+                # momentum fallback
+                mom_row = P.pct_change(252).loc[d].reindex(P.columns)
+                if mom_row.notna().any():
+                    row = mom_row.rank(pct=True, ascending=False)
+
+            if row.notna().any():
+                top = row.nlargest(self.max_positions).index
+                w = 1.0 / len(top)
+                W.loc[d, top] = w
+                W.loc[d, W.columns.difference(top)] = 0.0  # force sells for those not in top
+
+        # Seed first rebalance if still empty
+        if len(rebalance_dates) and rebalance_dates[0] in P.index and W.loc[rebalance_dates[0]].isna().all():
+            logging.warning("[VectorBT] No weights on first rebalance; seeding with momentum fallback.")
+            mom0 = P.pct_change(252).loc[rebalance_dates[0]].reindex(P.columns)
+            if mom0.notna().any():
+                top = mom0.nlargest(self.max_positions).index
+                w = 1.0 / len(top)
+                W.loc[rebalance_dates[0], top] = w
+                W.loc[rebalance_dates[0], W.columns.difference(top)] = 0.0
+
+        # Normalize each rebalance row to sum to 1 (handles ties / roundoff)
+        rb_mask = W.index.isin(rebalance_dates)
+        row_sums = W[rb_mask].sum(axis=1).replace(0, np.nan)
+        W.loc[rb_mask] = W.loc[rb_mask].div(row_sums, axis=0)
+
+        # Quick sanity logs
+        non_empty_rb = W.loc[rebalance_dates].notna().any(axis=1).sum()
+        logging.info(f"[VectorBT] Non-empty rebalance rows: {non_empty_rb}/{len(rebalance_dates)}")
+        assert non_empty_rb > 0, "All rebalance rows are empty; check factor/momentum inputs."  
+
+        # 5) Run portfolio on target weights
+        pf = vbt.Portfolio.from_orders(
             close=P,
-            entries=entries,
-            exits=None,  # We'll handle stops separately
-            freq='1D',
+            size=W,
+            size_type='targetpercent',
             init_cash=self.initial_capital,
-            fees=self.transaction_cost,
-            slippage=self.slippage
+            fees=self.transaction_cost + self.slippage,
+            slippage=0.0,
+            cash_sharing=True,
+            group_by=True,
+            call_seq='auto',
+            freq='1D',                 # <- ensures trade durations are Timedeltas
         )
-        logging.info("[VectorBT] Portfolio run complete")
 
-        # Calculate performance metrics
         stats = pf.stats()
-        eq = pf.value()
-        
-        # Get benchmark data
-        spy = self.historical_service.fetch_historical_data("SPY", period="5y") \
-            .set_index("Date")["Close"].groupby(level=0).last().loc[eq.index]
-        bench_ret = (spy.iloc[-1] - spy.iloc[0]) / spy.iloc[0]
-        alpha = stats['Total Return [%]'] / 100 - bench_ret
+        total_fees = float(stats['Total Fees Paid'])
+        equity = pf.value(group_by=True)
+        final_capital = float(equity.iloc[-1])
+        total_return  = final_capital / self.initial_capital - 1.0
 
-        # Create trades dataframe
-        trades_records = pf.trades.records_readable
-        trades_df = pd.DataFrame(trades_records) if trades_records is not None else None
-
-        # Calculate annualized return manually since it's not in stats
-        total_return = stats['Total Return [%]'] / 100
+        # Risk/return
+        rets = equity.pct_change().dropna()
+        vol = float(rets.std() * np.sqrt(252)) if len(rets) > 1 else 0.0
+        rf = 0.02
+        sharpe = float(((rets.mean() * 252) - rf) / vol) if vol > 0 else 0.0
         years = (pd.to_datetime(end_date) - pd.to_datetime(start_date)).days / 365
-        annualized_return = (1 + total_return) ** (1 / years) - 1 if years > 0 else 0
-        
-        # Calculate volatility manually
-        returns = eq.pct_change().dropna()
-        volatility = float(returns.std().mean() * np.sqrt(252)) if len(returns) > 1 else 0
-        
-        # Calculate average holding period manually
-        if trades_df is not None and not trades_df.empty:
-            avg_holding_period = trades_df['Duration'].mean() if 'Duration' in trades_df.columns else 0
-        else:
-            avg_holding_period = 0
-        
+        ann = (1 + total_return)**(1/years) - 1 if years > 0 else 0.0
+
+        # Trades / fees
+        tr_count = pf.trades.count(group_by=True)
+        num_trades = int(tr_count.item() if hasattr(tr_count, "item") else tr_count)
+        win_count = pf.trades.winning.count(group_by=True)
+        wins = int(win_count.item() if hasattr(win_count, "item") else win_count)
+        win_rate = (wins / num_trades) if num_trades > 0 else 0.0
+        total_fees = float(stats['Total Fees Paid'])
+        avg_hold = self._avg_holding_days_from_pf(pf, P.index)
+
+        # Benchmark
+        spy = self.historical_service.fetch_historical_data("SPY", period="5y") \
+            .set_index("Date")["Close"].groupby(level=0).last().loc[equity.index]
+        bench_ret = float(spy.iloc[-1] / spy.iloc[0] - 1.0)
+        alpha = total_return - bench_ret
+
         return BacktestResult(
             strategy_name="Multi-Factor Value (VectorBT)",
             start_date=pd.to_datetime(start_date),
             end_date=pd.to_datetime(end_date),
             initial_capital=self.initial_capital,
-            final_capital=float(eq.iloc[-1].sum()),
+            final_capital=final_capital,
             total_return=total_return,
-            annualized_return=annualized_return,
+            annualized_return=ann,
             max_drawdown=stats['Max Drawdown [%]'] / 100,
-            sharpe_ratio=stats['Sharpe Ratio'],
-            volatility=volatility,
-            num_trades=stats['Total Trades'],
-            win_rate=stats['Win Rate [%]'] / 100,
-            avg_holding_period=avg_holding_period,
-            transaction_costs=stats['Total Fees Paid'],
-            portfolio_values=eq,
-            cash_history=pd.Series(pf.cash().sum(axis=1)),  # VectorBT doesn't provide detailed cash history
-            position_values_sum=pd.Series(pf.value().sum(axis=1) - pf.cash().sum(axis=1)),
-            trades_df=trades_df,
+            sharpe_ratio=sharpe,
+            volatility=vol,
+            num_trades=num_trades,
+            win_rate=win_rate,
+            avg_holding_period=avg_hold,
+            transaction_costs=total_fees,
+            portfolio_values=equity,
+            cash_history=pf.cash(group_by=True),
+            position_values_sum=equity - pf.cash(group_by=True),
+            trades_df=pd.DataFrame(pf.trades.records_readable),
             benchmark_return=bench_ret,
             alpha=alpha
         )
+
+
 
 
 def run_combined_backtest(
@@ -576,7 +643,6 @@ def run_combined_backtest(
 
 
 def print_backtest_results(result: BacktestResult):
-    """Print formatted backtest results"""
     print(f"\n{'='*60}")
     print(f"BACKTEST RESULTS: {result.strategy_name}")
     print(f"{'='*60}")
@@ -591,7 +657,10 @@ def print_backtest_results(result: BacktestResult):
     print(f"Number of Trades: {result.num_trades}")
     print(f"Win Rate: {result.win_rate:.2%}")
     print(f"Avg Holding Period: {result.avg_holding_period:.1f} days")
-    print(f"Transaction Costs: ${result.transaction_costs:,.2f}")
+    print(f"Transaction Costs: ${result.transaction_costs:,.2f}")  # ← FIXED
     print(f"Benchmark Return: {result.benchmark_return:.2%}")
     print(f"Alpha: {result.alpha:.2%}")
     print(f"{'='*60}")
+
+    
+    
