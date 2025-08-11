@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+"""
+Full ticker universe for backtesting.
+
+"""
+
+TICKERS = [
+  'AIFU','ASC','ATHS','CIVI','EHLD','EMO','ESNT','EVT','EXG','FOF','GDO','GFR','GSL',
+  'HTD','ICCC','JCE','MHI','MTG','NXG','PDT','SITC','SPLP','STNG','TYG','UNMA','VIASP',
+  'ACT','ADX','AFB','AGD','AGMH','AMAL','AOD','ARDT','ASGI','ATCH','AWP','AXS','BGH',
+  'BGX','BHF','BHFAL','BHFAM','BHFAN','BHFAO','BMGL','BTO','BTZ','BWG','BXMX','CAG',
+  'CBNA','CEE','CET','CGABL','CHN','CHY','CIF','CLM','CMRE','CMU','CPAC','CPZ','CRC',
+  'CRI','CXE','DBL','DDI','DDT','DFP','DGICA','DGICB','DLNG','DLY','DMF','DNP','DPG',
+  'DRD','DSL','DSU','ECAT','ECF','EIC','EIM','EMF','ENX','EOI','ERC','ERH','ETG','ETJ',
+  'ETO','ETV','ETY','EVG','FAX','FBIZ','FFA','FFC','FG','FGB','FGN','FINV','FLC','FPF',
+  'FPH','FPI','FRA','FSCO','FT','FUNC','GAINL','GAINN','GAINZ','GAM','GCV','GHC','GHY',
+  'GIFI','GLAD','GLQ','GOF','GRF','HAFN','HG','HGLB','HIT','HNW','HQH','HQL','HYI',
+  'IAE','IFN','IGD','IHD','IMPP','IMPPP','INSW','INVX','JD','JEQ','JGH','JHI','JHS',
+  'JOF','JXG','KBH','KIO','KKRS','KMPB','KYN','LDP','LEN','LEO','LNKB','MATX','MBWM',
+  'MFM','MHO','MLR','MMT','MNDO','MNR','MNSO','MOMO','MTDR','MTH','NAD','NAMI','NBH',
+  'NBXG','NCV','NCZ','NDMO','NEA','NECB','NHS','NMI','NMIH','NML','NRO','NRT','NVAWW',
+  'NVNI','NWG','NZF','OFG','OFS','OFSSH','OPHC','OVLY','OXM','OZK','OZKAP','PAXS',
+  'PDPA','PDX','PFD','PFL','PFN','PFO','PGP','PGZ','PHD','PLBC','PMM','PR','PSF','PTA',
+  'QQQX','RAND','RCG','REFI','REPX','RNR','RWAY','RWAYL','RWAYZ','SABA','SBCWW','SBLK',
+  'SCD','SD','SGRP','SGU','SIM','SNV','SON','SPE','SPXX','SSBK','STEW','SXC','TBLD',
+  'TCBX','THQ','TK','TMHC','TWN','TY','UHS','UNM','USA','UTG','VALE','VEL','VFL','VGI',
+  'VIPS','VIRC','VKI','WLKP','XYF'
+]
+
+
