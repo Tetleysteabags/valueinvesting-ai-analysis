@@ -31,6 +31,21 @@ THRESHOLDS_CONSERVATIVE = {
     "roe": 0.08
 }
 
+# PIT / hygiene
+REPORTING_LAG_DAYS = 60
+MIN_PRICE = 5.0
+MIN_ADV_USD = 2_000_000.0   # set to None to disable; fallback uses MIN_MARKET_CAP
+MIN_MARKET_CAP = 750_000_000.0
+
+# Selection size & sector control
+TOP_N = 25
+SECTOR_CAP = 0.25           # 25% max of final picks from any one sector
+COMPOSITE_MIN_PCTL = 0.0    # e.g., 0.70 to require >= 70th pct within sector
+
+# Legacy thresholds you may keep (optional)
+MAX_PB = None               # e.g., 2.0
+MIN_EY = None               # e.g., 0.03  (>=3% earnings yield)
+
 # Cache configuration
 CACHE_FILE = "openai_cache.json"
 
@@ -42,3 +57,4 @@ TEST_TICKERS = [
     "CRM", "NFLX", "INTC", "CMCSA", "PFE", "TMO", "ABT", "KO", "PEP",
     "AVGO", "COST", "DHR", "ABBV", "WMT", "ACN", "LLY", "TXN"
 ]
+

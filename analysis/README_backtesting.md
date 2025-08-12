@@ -4,8 +4,10 @@ This directory contains a comprehensive backtesting system that combines the bes
 
 ## Files
 
-- `combined_backtesting.py` - Main backtesting system with both implementations
-- `test_combined_backtesting.py` - Test script to verify functionality
+- `vectorbt_backtesting.py` - Main backtesting system with VectorBT implementation
+- `manual_backtesting.py` - Custom backtesting implementation with detailed position tracking
+- `run_full_backtest.py` - Full backtest runner supporting comprehensive ticker lists
+- `tickers_full.py` - Complete ticker universe (254 stocks) for full backtesting
 
 ## Features
 
@@ -36,7 +38,7 @@ This directory contains a comprehensive backtesting system that combines the bes
 ### Basic Usage
 
 ```python
-from combined_backtesting import run_combined_backtest, print_backtest_results
+from vectorbt_backtesting import run_combined_backtest, print_backtest_results
 
 # Define your tickers
 tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NVDA"]
@@ -65,7 +67,7 @@ print_backtest_results(custom_result)
 ### Advanced Usage
 
 ```python
-from combined_backtesting import CustomValueInvestingBacktester, VectorBTBacktester
+from vectorbt_backtesting import CustomValueInvestingBacktester, VectorBTBacktester
 
 # Custom implementation with custom parameters
 custom_bt = CustomValueInvestingBacktester(
@@ -182,6 +184,19 @@ Make sure all services are properly configured:
 - `HistoricalDataService`
 - `FundamentalService`
 - `trading_days_aligner`
+
+## Performance Optimizations
+
+### Smart Caching System
+The system now includes intelligent data caching to eliminate double API fetching:
+- **Initial Data Fetch**: All fundamental data is fetched once during value screening
+- **Cache Reuse**: Subsequent backtesting uses cached data, reducing API calls by ~50%
+- **Rate Limit Protection**: Efficient API usage with built-in rate limiting and caching
+
+### Batch Processing
+- **Efficient Data Fetching**: Batch API calls for multiple tickers
+- **Progress Monitoring**: Real-time progress tracking with configurable checkpoint intervals
+- **Resume Capability**: Automatic checkpointing allows resuming interrupted analyses
 
 ## Configuration
 

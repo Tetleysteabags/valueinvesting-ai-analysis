@@ -9,7 +9,6 @@ import pandas as pd
 import csv
 import os
 from utils.logging_setup import setup_logging
-from services.stock_service_free_tier import fetch_stock_data_free_tier
 from services.openai_service import sentiment_analysis, earnings_call, stock_insights, value_investing
 from analysis.financial_analysis import meets_value_criteria
 from config import FMP_API_KEY, OPENAI_API_KEY

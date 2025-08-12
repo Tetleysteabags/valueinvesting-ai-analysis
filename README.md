@@ -60,26 +60,47 @@ pip install -r requirements.txt
 <pre>
 ├── main.py # Main entry point
 ├── config.py # Configuration settings and thresholds
-├── run_full_pipeline_strict.py # Full pipeline with strict criteria
 ├── utils/
 │ ├── logging_setup.py # Logging configuration
 │ ├── cache.py # Caching utilities
 │ └── monitoring.py # Real-time monitoring system
 ├── services/
 │ ├── openai_service.py # OpenAI API integration
-│ ├── fmp_client.py # Centralized FMP API client
-│ ├── stock_service_v2.py # Enhanced stock data fetching
+│ ├── fmp_client.py # Centralized FMP API client with caching
+│ ├── stock_service_v2.py # Enhanced stock data fetching with batch processing
 │ └── historical_data_service.py # Historical data management
 ├── analysis/
 │ ├── financial_analysis.py # Financial calculations
-│ ├── value_analysis.py # Value investing logic
-│ └── backtesting.py # Comprehensive backtesting framework
+│ ├── value_analysis.py # Enhanced value investing logic with caching optimization
+│ ├── vectorbt_backtesting.py # VectorBT-based backtesting implementation
+│ ├── manual_backtesting.py # Custom backtesting implementation
+│ ├── run_full_backtest.py # Full backtest runner with comprehensive ticker support
+│ ├── tickers_full.py # Complete ticker universe (254 stocks)
+│ └── README_backtesting.md # Detailed backtesting documentation
 ├── tests/
 │ ├── debug_backtest.py # Backtesting validation
 │ └── test_core_functionality.py # Core functionality tests
 └── tickers/
     └── stock_tickers.json # Stock universe
 </pre>
+
+## Recent Improvements (Latest Update)
+
+### 🚀 Performance Optimizations
+- **Smart Caching System**: Eliminated double API fetching with intelligent data caching
+- **Batch Processing**: Enhanced FMP API integration with efficient batch requests
+- **Rate Limit Management**: Improved API call efficiency and cost optimization
+
+### 📊 Enhanced Backtesting
+- **VectorBT Integration**: High-performance backtesting with comprehensive metrics
+- **Custom Implementation**: Detailed position tracking and risk management
+- **Full Universe Support**: Backtesting across 254 tickers with strict value criteria
+- **Real-time Monitoring**: Progress tracking and checkpointing for long-running analyses
+
+### 🔧 Code Quality
+- **File Organization**: Renamed files for clarity and better organization
+- **Error Handling**: Robust error handling and validation throughout the pipeline
+- **Documentation**: Comprehensive READMEs and inline documentation
 
 ## Value Investing Criteria
 

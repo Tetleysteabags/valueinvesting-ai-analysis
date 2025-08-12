@@ -22,6 +22,11 @@ from services.openai_service import (
 from analysis.financial_analysis import meets_value_criteria
 from config import THRESHOLDS, THRESHOLDS_MODERATE, THRESHOLDS_CONSERVATIVE
 from utils.monitoring import create_monitor
+from analysis.value_initial_filters import value_initial_filter, FieldMap
+from config import (
+    REPORTING_LAG_DAYS, MIN_PRICE, MIN_ADV_USD, MIN_MARKET_CAP,
+    TOP_N, SECTOR_CAP, COMPOSITE_MIN_PCTL, MAX_PB, MIN_EY
+)
 
 
 def get_criteria_thresholds(criteria_level: str = "strict") -> Dict[str, float]:
@@ -157,6 +162,71 @@ def run_stock_analysis(
         print("✅ All tickers already processed!")
         return df_portfolio
     
+    asof_date = pd.Timestamp.utcnow().normalize().tz_localize(None)
+
+    # Initialize cache to avoid double API fetching
+    all_data_cache: Dict[str, Dict[str, Any]] = {}
+    fmp_dict: Dict[str, pd.DataFrame] = {}
+    # We'll also collect a minimal price snapshot. If you don't have volume history handy,
+    # we'll disable the ADV check below by passing MIN_ADV_USD=None.
+    price_last = {}
+
+    # Pull fundamentals in batches (reuse your existing batch fetch)
+    print("📊 Fetching initial data for value screening...")
+    
+    for j in range(0, len(symbol_list), batch_size):
+        b = symbol_list[j:j+batch_size]
+        bdata = fetch_stock_data_batch(b)  # your existing call
+        # Cache the data for later use
+        all_data_cache.update(bdata)
+        for tkr, rec in bdata.items():
+            # Wrap into a one-row DataFrame; if you have multiple filings,
+            # you can append more rows per ticker (better PIT fidelity).
+            row = dict(rec)
+            # Ensure a PIT date column exists for the selector
+            row.setdefault("filingDate", rec.get("filingDate") or rec.get("fiscalDateEnding") or rec.get("date"))
+            fmp_dict[tkr.upper()] = pd.DataFrame([row])
+            # Minimal price for price>MIN_PRICE check
+            price_last[tkr.upper()] = rec.get("current_price") or rec.get("price") or np.nan
+
+    # Build a minimal prices_df; if you have a proper price/volume matrix, plug it in here.
+    px_close = pd.DataFrame(price_last, index=[asof_date])
+    prices_df_min = {"close": px_close, "volume": None}
+
+    # If you do NOT have recent volume matrix available, turn off ADV gate:
+    min_adv = MIN_ADV_USD if MIN_ADV_USD is not None else None
+    if prices_df_min["volume"] is None:
+        min_adv = None
+
+    screened, panel = value_initial_filter(
+        fmp_dict=fmp_dict,
+        prices_df=prices_df_min,           
+        asof_date=asof_date,
+        field_map=FieldMap(),               
+        REPORTING_LAG_DAYS=REPORTING_LAG_DAYS,
+        MIN_PRICE=MIN_PRICE,
+        MIN_ADV_USD=min_adv,                # disables ADV check if no volume
+        MIN_MARKET_CAP=MIN_MARKET_CAP,
+        TOP_N=TOP_N,
+        SECTOR_CAP=SECTOR_CAP,
+        COMPOSITE_MIN_PCTL=COMPOSITE_MIN_PCTL,
+        MAX_PB=MAX_PB,
+        MIN_EY=MIN_EY,
+    )
+
+    allowed_tickers = set([t.upper() for t in screened])
+    # Optional: save the diagnostic panel to inspect ranks/guardrails
+    try:
+        panel.to_csv(os.path.splitext(output_path)[0] + "_value_screen_panel.csv", index=True)
+        print(f"🧾 Saved value screen panel with {len(panel)} rows")
+    except Exception as e:
+        print(f"⚠️ Could not save panel: {e}")
+
+    if not allowed_tickers:
+        print("⚠️ Value screen returned no names. Falling back to legacy criteria for this run.")
+    else:
+        print(f"✅ Value screen produced {len(allowed_tickers)} tickers (cap {TOP_N}). Proceeding...")
+    
     print(f"🔄 Processing {total_tickers} new tickers...")
     
     tickers_processed = 0
@@ -181,9 +251,17 @@ def run_stock_analysis(
         
         print(f"\n📦 Processing batch {batch_num}/{total_batches} ({len(batch)} stocks)")
         
-        # Fetch all stock data for this batch in one API call
-        batch_data = fetch_stock_data_batch(batch)
-        print(f"📊 Fetched data for {len(batch_data)} stocks")
+        # Use cached data to avoid double API fetching
+        batch_data = {t: all_data_cache.get(t.upper()) for t in batch if t.upper() in all_data_cache}
+        missing = [t for t in batch if t.upper() not in all_data_cache]
+        
+        if missing:
+            print(f"📊 Fetching missing data for {len(missing)} stocks...")
+            missing_data = fetch_stock_data_batch(missing)
+            batch_data.update(missing_data)
+            all_data_cache.update(missing_data)  # Cache the new data too
+        
+        print(f"📊 Using data for {len(batch_data)} stocks (cached: {len(batch_data) - len(missing)}, fetched: {len(missing)})")
         
         # Process each stock in the batch
         for ticker in batch:
@@ -205,8 +283,15 @@ def run_stock_analysis(
                 data = batch_data[ticker_upper]
                 
                 # Check if meets value criteria
+                if allowed_tickers and ticker_upper not in allowed_tickers:
+                    print(f"⏭️  {ticker} skipped (did not pass value screen).")
+                    failed_stocks += 1
+                    monitor.add_failed_stock(ticker, "Value screen")
+                    continue
+                
+                # keep your legacy criteria as a secondary check/logging
                 if meets_criteria_with_level(data, criteria_level):
-                    print(f"✅ {ticker} meets {criteria_level} criteria!")
+                    print(f"✅ {ticker} passes value screen + {criteria_level} thresholds")
                     
                     # Add AI insights
                     result = add_ai_insights(ticker, data, max_openai_calls)
@@ -272,6 +357,7 @@ def run_stock_analysis(
     print(f"   • Tickers processed: {tickers_processed}")
     print(f"   • Qualifying stocks: {tickers_added}")
     print(f"   • Success rate: {tickers_added/tickers_processed*100:.1f}%" if tickers_processed > 0 else "   • Success rate: 0%")
+    print(f"   • Data cache hits: {len(all_data_cache)} tickers")
     print(f"   • Output saved to: {output_path}")
     
     return df_portfolio

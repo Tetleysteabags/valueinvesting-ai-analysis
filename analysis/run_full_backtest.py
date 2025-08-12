@@ -9,7 +9,7 @@ from datetime import datetime
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from combined_backtesting import run_combined_backtest, print_backtest_results
+from vectorbt_backtesting import run_combined_backtest, print_backtest_results
 import logging
 from tickers_full import TICKERS
 
