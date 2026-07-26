@@ -1,7 +1,7 @@
 # Value Investing and AI Analysis
 
 ## Overview
-This project automates the stock selection process for value investing by fetching financial data, analyzing sentiment and earnings calls using OpenAI, and applying value investing criteria to identify potential investment opportunities. The system now includes a comprehensive backtesting framework for strategy validation and optimization.
+Automated value-investing research tool: screens the FMP stock universe against configurable quantitative thresholds, layers OpenAI-based qualitative analysis (earnings-call and sentiment read) on top, and validates candidate strategies with a parameter-optimizing backtesting framework (Sharpe ratio, alpha vs. SPY, drawdown, transaction-cost modeling) before any of it touches real capital. See Backtesting Framework and Example Results below for the actual methodology and output.
 
 ## Features
 - **Financial Data Integration**: Fetch comprehensive financial data using Financial Modeling Prep (FMP) API
